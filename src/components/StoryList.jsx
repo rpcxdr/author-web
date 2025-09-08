@@ -38,7 +38,12 @@ export default function StoryList() {
           <article key={story.id} className="story-card">
             <h3><Link to={`/stories/${story.id}`}>{story.title}</Link></h3>
             <p>{story.excerpt}</p>
-            <Link className="read-more" to={`/stories/${story.id}`}>Read full story →</Link>
+            <div>
+              <Link className="read-more" to={`/edit/${story.id}`} style={{ marginRight: 8 }}>
+                Edit
+              </Link>
+              <Link className="read-more" to={`/stories/${story.id}`}>Read full story</Link>
+            </div>
           </article>
         ))
       )}

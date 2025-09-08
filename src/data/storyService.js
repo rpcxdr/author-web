@@ -1,4 +1,4 @@
-import defaultStories from './stories';
+var defaultStories = {}
 
 const STORAGE_KEY = 'author_web_stories_cache';
 const API_BASE = process.env.REACT_APP_API_BASE || ''; // e.g. set to 'http://localhost:4000' if needed
@@ -94,5 +94,28 @@ export async function removeStory(id) {
     console.warn(`removeStory(${id}): server delete failed, removing from cache`, e);
     const cache = loadFromCache().filter(s => s.id !== id);
     saveToCache(cache);
+  }
+}
+
+export async function updateStory(id, { title, excerpt, content }) {
+  const body = { title, excerpt, content };
+  try {
+    const updated = await fetchJson(`/stories/${encodeURIComponent(id)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    // update cache with returned object (if provided) or merge fields
+    const cache = loadFromCache().map(s => (s.id === id ? updated : s));
+    saveToCache(cache);
+    return updated;
+  } catch (e) {
+    console.warn(`updateStory(${id}): server update failed, updating cache`, e);
+    // fallback: update cache locally
+    const cache = loadFromCache().map(s =>
+      s.id === id ? { ...s, title, excerpt, content } : s
+    );
+    saveToCache(cache);
+    return cache.find(s => s.id === id) || null;
   }
 }

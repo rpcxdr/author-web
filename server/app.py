@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, render_template, redirect, url_for
 from flask_cors import CORS
 import threading
 import json
@@ -9,20 +9,94 @@ app = Flask(__name__)
 CORS(app)
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "stories.json")
+CONTENT_DIR = os.path.join(os.path.dirname(__file__), "story_texts")
 lock = threading.Lock()
 
+def _ensure_content_dir():
+    try:
+        os.makedirs(CONTENT_DIR, exist_ok=True)
+    except Exception:
+        pass
+
+def _write_content_file(filename, text):
+    _ensure_content_dir()
+    path = os.path.join(CONTENT_DIR, filename)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+
+def _read_content_file(filename):
+    path = os.path.join(CONTENT_DIR, filename)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception:
+        return ""
+
 def load_stories():
+    """
+    Loads metadata from stories.json and attaches 'content' for each story by
+    reading the separate content file referenced by 'content_file'. If an entry
+    has inline 'content' but no 'content_file' we migrate it to a new file and
+    update metadata on disk.
+    """
     if not os.path.exists(DATA_FILE):
         return []
+
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            raw = json.load(f)
     except Exception:
         return []
 
+    changed = False
+    stories = []
+    for s in raw:
+        story = dict(s)  # copy
+        content = ""
+        content_file = story.get("content_file")
+        if content_file:
+            content = _read_content_file(content_file)
+        elif "content" in story and story.get("content") is not None:
+            # migrate inline content to a file
+            content = story.get("content", "")
+            fname = story.get("id", uuid.uuid4().hex) + ".txt"
+            try:
+                _write_content_file(fname, content)
+                story["content_file"] = fname
+                changed = True
+            except Exception:
+                # fallback: keep inline content if write fails
+                pass
+        # Attach content in-memory for API responses (do not persist 'content' field)
+        story["content"] = content
+        stories.append(story)
+
+    if changed:
+        # Persist updated metadata (without 'content' fields)
+        save_stories(stories)
+
+    return stories
+
 def save_stories(stories):
+    """
+    Persists story metadata to stories.json. Excludes the in-memory 'content'
+    field; ensures 'content_file' is present when possible.
+    """
+    to_save = []
+    for s in stories:
+        meta = {k: v for k, v in s.items() if k != "content"}
+        # If there's still inline content but no content_file, try to write it
+        if "content_file" not in meta and "content" in s:
+            try:
+                fname = s.get("id", uuid.uuid4().hex) + ".txt"
+                _write_content_file(fname, s["content"])
+                meta["content_file"] = fname
+            except Exception:
+                # ignore write failures; leave inline (will not be saved)
+                pass
+        to_save.append(meta)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(stories, f, ensure_ascii=False, indent=2)
+        json.dump(to_save, f, ensure_ascii=False, indent=2)
 
 @app.route("/api/stories", methods=["GET"])
 def list_stories():
@@ -51,10 +125,21 @@ def create_story():
     if not title or not content:
         abort(400, description="Missing required fields: title and content")
 
+    new_id = uuid.uuid4().hex
+    filename = new_id + ".txt"
+
+    # write content to its own file
+    try:
+        _write_content_file(filename, content)
+    except Exception:
+        abort(500, description="Failed to write story content file")
+
     new_story = {
-        "id": uuid.uuid4().hex,
+        "id": new_id,
         "title": title,
         "excerpt": excerpt or (content[:140] + ("…" if len(content) > 140 else "")),
+        "content_file": filename,
+        # include content in-memory for the response, but it will not be saved inline
         "content": content
     }
 
@@ -69,11 +154,65 @@ def create_story():
 def delete_story(story_id):
     with lock:
         stories = load_stories()
-        filtered = [s for s in stories if s.get("id") != story_id]
-        if len(filtered) == len(stories):
+        target = next((s for s in stories if s.get("id") == story_id), None)
+        if not target:
             abort(404, description="Story not found")
+        filtered = [s for s in stories if s.get("id") != story_id]
+        # attempt to remove associated content file
+        content_file = target.get("content_file")
+        if content_file:
+            try:
+                path = os.path.join(CONTENT_DIR, content_file)
+                if os.path.exists(path):
+                    os.remove(path)
+            except Exception:
+                pass
         save_stories(filtered)
     return "", 204
+
+@app.route("/api/stories/<story_id>", methods=["PUT"])
+def update_story(story_id):
+    if not request.is_json:
+        abort(400, description="Expected application/json")
+    data = request.get_json()
+    title = (data.get("title") or "").strip()
+    excerpt = (data.get("excerpt") or "").strip()
+    content = data.get("content")
+    if not title or content is None or (isinstance(content, str) and content.strip() == ""):
+        abort(400, description="Missing required fields: title and content")
+
+    with lock:
+        stories = load_stories()
+        story = next((s for s in stories if s.get("id") == story_id), None)
+        if not story:
+            abort(404, description="Story not found")
+
+        # update metadata
+        story["title"] = title
+        story["excerpt"] = excerpt or (content[:140] + ("…" if len(content) > 140 else ""))
+
+        # ensure content_file exists
+        content_file = story.get("content_file")
+        if not content_file:
+            content_file = f"{story_id}.txt"
+            story["content_file"] = content_file
+
+        # write content to file
+        try:
+            _write_content_file(content_file, content)
+        except Exception:
+            abort(500, description="Failed to write story content file")
+
+        # keep content in-memory for response
+        story["content"] = content
+
+        save_stories(stories)
+
+    return jsonify(story)
+
+@app.route("/edit/<story_id>")
+def edit_page(story_id):
+    return render_template("edit.html", story_id=story_id)
 
 if __name__ == "__main__":
     # default port 4000 to match client examples
