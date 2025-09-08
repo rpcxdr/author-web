@@ -1,0 +1,104 @@
+:root{
+  --bg: #efe6db;
+  --panel: #f7f1e8;
+  --accent: #3b5a3b; /* forest green */
+  --rust: #8b5323;   /* warm rust/bark */
+  --text: #2b2b23;
+  --muted: #6b6256;
+  --shadow: rgba(27,21,16,0.08);
+  --radius: 8px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Inter, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,var(--bg) 0%, #f3eadf 100%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.6;
+}
+
+/* header */
+.app header{
+  background: linear-gradient(180deg, var(--accent), #2f472f);
+  color:#fff;
+  padding:14px 20px;
+  box-shadow: 0 3px 10px var(--shadow);
+}
+.app header h1{
+  margin:0;
+  font-size:1.25rem;
+  letter-spacing:0.2px;
+}
+.app header a{ color: #fff; text-decoration:none; }
+
+/* layout */
+main{
+  padding:20px;
+  max-width:900px;
+  margin:20px auto;
+}
+
+/* story list cards */
+.story-list{
+  display:block;
+}
+.story-card{
+  background: linear-gradient(180deg,var(--panel), #f2e9df);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow: 0 6px 18px var(--shadow);
+  border-left:6px solid rgba(59,90,59,0.12);
+}
+.story-card h2{
+  margin:0 0 8px 0;
+  font-size:1.05rem;
+  color:var(--text);
+}
+.story-card p{
+  margin:0 0 10px 0;
+  color:var(--muted);
+}
+
+/* links and actions */
+a.read-more{
+  display:inline-block;
+  font-weight:600;
+  color:var(--rust);
+  text-decoration:none;
+  background: rgba(139,83,35,0.06);
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid rgba(139,83,35,0.08);
+}
+a.read-more:hover{ transform:translateY(-1px); }
+
+/* story detail */
+.story-detail{
+  background: linear-gradient(180deg,#fff,#fbf7f2);
+  padding:20px;
+  border-radius:var(--radius);
+  box-shadow:0 8px 24px var(--shadow);
+}
+.story-detail h2{ margin-top:0; color:var(--accent); }
+.story-detail .content{
+  margin-top:12px;
+  white-space:pre-wrap;
+  color:var(--text);
+  font-size:1rem;
+}
+
+/* utilities */
+.small{ font-size:0.9rem; color:var(--muted); }
+.center{ text-align:center; }
+
+/* responsive */
+@media (max-width:600px){
+  main{ padding:14px; margin:12px; }
+  .story-card{ padding:12px; }
+  .story-card h2{ font-size:1.1rem; }
+  a.read-more{ font-size:0.9rem; padding:5px 8px; }
+}
