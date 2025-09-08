@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getStories } from '../data/storyService';
+import { getStories, removeStory } from '../data/storyService';
 
 export default function StoryList() {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(null);
 
   useEffect(() => {
     let mounted = true;
@@ -21,6 +22,20 @@ export default function StoryList() {
     })();
     return () => { mounted = false; };
   }, []);
+
+  async function handleDelete(id) {
+    if (!window.confirm('Delete this story?')) return;
+    setDeleting(id);
+    try {
+      await removeStory(id);
+      setStories(prev => prev.filter(s => s.id !== id));
+    } catch (err) {
+      console.error('Delete failed', err);
+      alert('Failed to delete story');
+    } finally {
+      setDeleting(null);
+    }
+  }
 
   if (loading) return <div className="center small">Loading stories…</div>;
 
@@ -42,6 +57,15 @@ export default function StoryList() {
               <Link className="read-more" to={`/edit/${story.id}`} style={{ marginRight: 8 }}>
                 Edit
               </Link>
+              <button
+                className="read-more"
+                onClick={() => handleDelete(story.id)}
+                disabled={deleting === story.id}
+                style={{ marginRight: 8 }}
+                type="button"
+              >
+                {deleting === story.id ? 'Deleting…' : 'Delete'}
+              </button>
               <Link className="read-more" to={`/stories/${story.id}`}>Read full story</Link>
             </div>
           </article>

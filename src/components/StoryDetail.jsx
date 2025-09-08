@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getStory } from '../data/storyService';
-
+import DOMPurify from "dompurify";
 export default function StoryDetail() {
   const { id } = useParams();
   const [story, setStory] = useState(null);
@@ -43,7 +43,7 @@ export default function StoryDetail() {
   return (
     <article className="story-detail">
       <h2>{story.title}</h2>
-      <div className="content">{story.content}</div>
+      <div className="content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(story.content) }} />
       <p><Link to="/">← Back to stories</Link></p>
     </article>
   );

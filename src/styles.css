@@ -64,17 +64,20 @@ main{
 }
 
 /* links and actions */
-a.read-more{
+.read-more{
   display:inline-block;
   font-weight:600;
+  font-family: Helvetica, Arial, Tahoma, Verdana, sans-serif;
+  font-size: 16px;
   color:var(--rust);
   text-decoration:none;
   background: rgba(139,83,35,0.06);
   padding:6px 10px;
   border-radius:6px;
   border:1px solid rgba(139,83,35,0.08);
+  cursor: pointer;
 }
-a.read-more:hover{ transform:translateY(-1px); }
+.read-more:hover{ transform:translateY(-1px); }
 
 /* story detail */
 .story-detail{

@@ -84,6 +84,15 @@ export async function addStory({ title, excerpt, content }) {
   }
 }
 
+/*  const url = `${API_BASE}/api/stories/${encodeURIComponent(id)}`;
+  try {
+    const res = await fetch(url, { method: 'DELETE' });
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(`Request failed ${res.status} ${res.statusText} ${text}`);
+    }
+*/
+
 export async function removeStory(id) {
   try {
     await fetchJson(`/stories/${encodeURIComponent(id)}`, { method: 'DELETE' });

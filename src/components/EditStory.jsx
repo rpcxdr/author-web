@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getStory, updateStory } from "../data/storyService";
+import CKEditorDemo from "./Editor";
 
 export default function EditStory() {
   const { id } = useParams();
@@ -76,12 +77,10 @@ export default function EditStory() {
         <div>
           <label>
             Content
-            <textarea
-              rows={12}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              required
-            />
+            <CKEditorDemo 
+              value={content} 
+              onChange={(val) => setContent(val)}
+            ></CKEditorDemo>
           </label>
         </div>
         <div>

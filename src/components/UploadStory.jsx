@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { addStory } from '../data/storyService';
+import CKEditorDemo from "./Editor";
 
 export default function UploadStory() {
   const [title, setTitle] = useState('');
@@ -48,8 +49,11 @@ export default function UploadStory() {
         </label>
         <label>
           Content
-          <textarea value={content} onChange={e => setContent(e.target.value)} rows={10} required disabled={saving} />
-        </label>
+            <CKEditorDemo 
+              value={content} 
+              onChange={(val) => setContent(val)}
+            ></CKEditorDemo>
+          </label>
 
         {error && <p className="small" style={{ color: 'crimson' }}>{error}</p>}
 
