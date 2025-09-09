@@ -5,8 +5,9 @@ import CKEditorDemo from "./Editor";
 
 export default function UploadStory() {
   const [title, setTitle] = useState('');
-  const [excerpt, setExcerpt] = useState('');
-  const [date, setDate] = useState('');
+  const [excerpt, setExcerpt] = useState("");
+  const [date, setDate] = useState("");
+  const [published, setPublished] = useState(true);
   const [content, setContent] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -14,21 +15,16 @@ export default function UploadStory() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError(null);
-    if (!title.trim() || !content.trim()) {
-      setError('Title and content are required.');
-      return;
-    }
-
     setSaving(true);
     try {
-      const newStory = await addStory({
+      const created = await addStory({
         title: title.trim(),
         excerpt: excerpt.trim() || content.trim().slice(0, 140),
         content: content.trim(),
-        date: (date || "").trim()
+        date: (date || "").trim(),
+        published
       });
-      navigate(`/stories/${newStory.id}`);
+      navigate(`/stories/${created.id}`);
     } catch (err) {
       console.error('addStory failed', err);
       setError('Failed to publish story. Try again.');
@@ -72,6 +68,17 @@ export default function UploadStory() {
               type="date" 
               value={date} 
               onChange={e => setDate(e.target.value)} 
+              disabled={saving}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Published
+            <input 
+              type="checkbox" 
+              checked={!!published} 
+              onChange={e => setPublished(e.target.checked)} 
               disabled={saving}
             />
           </label>

@@ -59,8 +59,8 @@ export async function getStory(id) {
   }
 }
 
-export async function addStory({ title, excerpt, content, date }) {
-  const body = { title, excerpt, content, date };
+export async function addStory({ title, excerpt, content, date, published }) {
+  const body = { title, excerpt, content, date, published };
   try {
     const created = await fetchJson('/stories', {
       method: 'POST',
@@ -76,7 +76,7 @@ export async function addStory({ title, excerpt, content, date }) {
     console.warn('addStory: server save failed, saving to cache', e);
     // fallback: create locally with timestamp id
     const id = String(Date.now());
-    const story = { id, title, excerpt, content, date };
+    const story = { id, title, excerpt, content, date, published };
     const cache = loadFromCache();
     cache.unshift(story);
     saveToCache(cache);
@@ -106,8 +106,8 @@ export async function removeStory(id) {
   }
 }
 
-export async function updateStory(id, { title, excerpt, content, date }) {
-  const body = { title, excerpt, content, date };
+export async function updateStory(id, { title, excerpt, content, date, published }) {
+  const body = { title, excerpt, content, date, published };
   try {
     const updated = await fetchJson(`/stories/${encodeURIComponent(id)}`, {
       method: 'PUT',
@@ -122,7 +122,7 @@ export async function updateStory(id, { title, excerpt, content, date }) {
     console.warn(`updateStory(${id}): server update failed, updating cache`, e);
     // fallback: update cache locally
     const cache = loadFromCache().map(s =>
-      s.id === id ? { ...s, title, excerpt, content, date } : s
+      s.id === id ? { ...s, title, excerpt, content, date, published } : s
     );
     saveToCache(cache);
     return cache.find(s => s.id === id) || null;

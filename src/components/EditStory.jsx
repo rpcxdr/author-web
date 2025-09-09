@@ -10,6 +10,7 @@ export default function EditStory() {
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [date, setDate] = useState("");
+  const [published, setPublished] = useState(true);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -24,6 +25,8 @@ export default function EditStory() {
         setTitle(data.title || "");
         setExcerpt(data.excerpt || "");
         setDate(data.date || "");
+        // server stores published as string "true"/"false" or boolean
+        setPublished(data.published === false || data.published === "false" ? false : true);
         setContent(data.content || "");
       } catch (err) {
         if (mounted) setError(err.message || "Failed to load story");
@@ -39,7 +42,7 @@ export default function EditStory() {
     setSaving(true);
     setError(null);
 
-    const payload = { title: title.trim(), excerpt: excerpt.trim(), content, date: (date || "").trim() };
+    const payload = { title: title.trim(), excerpt: excerpt.trim(), content, date: (date || "").trim(), published };
     try {
       await updateStory(id, payload);
       navigate("/");
@@ -80,7 +83,23 @@ export default function EditStory() {
         <p>
           <label>
             <div>Date</div>
-            <input value={date} onChange={e => setDate(e.target.value)} placeholder="YYYY-MM-DD or free-form" />
+            <input 
+              type="date" 
+              value={date} 
+              onChange={e => setDate(e.target.value)} 
+              placeholder="YYYY-MM-DD or free-form" 
+            />
+          </label>
+        </p>
+        <p>
+          <label>
+            <div>Published</div>
+            <input
+              type="checkbox"
+              checked={!!published}
+              onChange={(e) => setPublished(e.target.checked)}
+            />{" "}
+            <small className="small">checked = published</small>
           </label>
         </p>
         <p>

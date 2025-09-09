@@ -53,8 +53,9 @@ def load_stories():
     stories = []
     for s in raw:
         story = dict(s)  # copy
-        # ensure date field remains if present, otherwise set empty string
+        # ensure field remains if present, otherwise give it a default
         story["date"] = story.get("date", "")
+        story["published"] = story.get("published", True)
         content = ""
         content_file = story.get("content_file")
         if content_file:
@@ -72,9 +73,11 @@ def save_stories(stories):
     to_save = []
     for s in stories:
         meta = {k: v for k, v in s.items() if k != "content"}
-        # ensure date key exists (empty string if missing)
+        # ensure key exists (default string if missing)
         if "date" not in meta:
             meta["date"] = s.get("date", "")
+        if "published" not in meta:
+            meta["published"] = s.get("published", True)
         if "content_file" not in meta and "content" in s:
             try:
                 fname = s.get("id", uuid.uuid4().hex) + ".txt"
@@ -110,6 +113,7 @@ def create_story():
     content = (data.get("content") or "").strip()
     excerpt = (data.get("excerpt") or "").strip()
     date = (data.get("date") or "").strip()
+    published = data.get("published")
 
     if not title or not content:
         abort(400, description="Missing required fields: title and content")
@@ -128,6 +132,7 @@ def create_story():
         "excerpt": excerpt or (content[:140] + ("…" if len(content) > 140 else "")),
         "content_file": filename,
         "date": date or datetime.utcnow().date().isoformat(),
+        "published": published,
         "content": content
     }
 
@@ -160,6 +165,7 @@ def delete_story(story_id):
 
 @app.route("/api/stories/<story_id>", methods=["PUT"])
 def update_story(story_id):
+    print("update_story: here1")
     if not request.is_json:
         abort(400, description="Expected application/json")
     data = request.get_json()
@@ -167,6 +173,9 @@ def update_story(story_id):
     content = data.get("content") or ""
     excerpt = (data.get("excerpt") or "").strip()
     date = (data.get("date") or "").strip()
+    print("update_story: here2")
+    published = data.get("published")
+    print(f"update_story: here3 {published} -- {data.get("published")}")
 
     if not title or not content:
         abort(400, description="Missing required fields: title and content")
@@ -187,8 +196,12 @@ def update_story(story_id):
         story["title"] = title
         story["excerpt"] = excerpt or (content[:140] + ("…" if len(content) > 140 else ""))
         story["date"] = date or story.get("date", datetime.utcnow().date().isoformat())
+        story["published"] = published
         # keep story["content"] for response
         story["content"] = content
+
+        print(f"update_story: here4 {jsonify(story)}")
+
         save_stories(stories)
 
     return jsonify(story)

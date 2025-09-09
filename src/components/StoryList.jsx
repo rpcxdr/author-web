@@ -52,7 +52,12 @@ export default function StoryList() {
         stories.map(story => (
           <article key={story.id} className="story-card">
             <h3><Link to={`/stories/${story.id}`}>{story.title}</Link></h3>
-            <div className="small">{story.date || ""}</div>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <div className="small">{story.date || ""}</div>
+              <span className={`status ${story.published === false || story.published === "false" ? "draft" : "published"}`}>
+                {story.published === false || story.published === "false" ? "Draft" : "Published"}
+              </span>
+            </div>
             <p>{story.excerpt}</p>
             <div>
               <Link className="action-button" to={`/edit/${story.id}`} style={{ marginRight: 8 }}>

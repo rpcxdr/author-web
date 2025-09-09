@@ -43,7 +43,12 @@ export default function StoryDetail() {
   return (
     <article className="story-detail">
       <h2>{story.title}</h2>
-      <div className="small">{story.date || ""}</div>
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <div className="small">{story.date || ""}</div>
+        <span className={`status ${story.published === false || story.published === "false" ? "draft" : "published"}`}>
+          {story.published === false || story.published === "false" ? "Draft" : "Published"}
+        </span>
+      </div>
       <div className="content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(story.content) }} />
       <p><Link to="/">← Back to stories</Link></p>
     </article>
