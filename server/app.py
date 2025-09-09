@@ -239,7 +239,6 @@ def delete_story(story_id):
 
 @app.route("/api/stories/<story_id>", methods=["PUT"])
 def update_story(story_id):
-    print("update_story: here1")
     if not request.is_json:
         abort(400, description="Expected application/json")
     data = request.get_json()
@@ -247,9 +246,7 @@ def update_story(story_id):
     content = data.get("content") or ""
     excerpt = (data.get("excerpt") or "").strip()
     date = (data.get("date") or "").strip()
-    print("update_story: here2")
     published = data.get("published")
-    print(f"update_story: here3 {published} -- {data.get("published")}")
 
     if not title or not content:
         abort(400, description="Missing required fields: title and content")
