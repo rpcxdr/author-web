@@ -142,3 +142,4 @@ vite.config.ts.timestamp-*
 
 server/story_texts/
 server/stories.json
+public/stories/

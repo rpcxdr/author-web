@@ -11,7 +11,6 @@ CORS(app)
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "stories.json")
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), "story_texts")
-# RENDERED_DIR = os.path.join(os.path.dirname(__file__), "rendered_stories")
 RENDERED_DIR = os.path.join(os.path.dirname(__file__), "../public/stories")
 lock = threading.Lock()
 
