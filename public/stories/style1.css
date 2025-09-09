@@ -1,0 +1,399 @@
+/*
+CSS for MaryHuntWebb.com
+*/
+
+html {
+	font-size: 100.1%; /* 16 pt in Firefox and Safari */
+	 } 
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 1.0em;
+	line-height: 1.25em;
+	background: #808080; /* gray */
+	}
+#wrap {
+	max-width: 75em; /* 1200px */
+	min-width: 50em; /* 800px */
+	background: url(images/twocol-bg.gif) repeat-y 16.667% 0;
+	}
+h1, h2, h3, h4, h6 {
+	font-family: "Trebuchet MS", Geneva, Arial, Helvetica, sans-serif;
+	text-align: center;
+	}
+	h5 {
+	text-align: center;
+	}
+h2, h3, h4, h5 {
+	color: #800000; /* maroon */
+	font-weight: normal;
+	}
+h2 {
+	font-size: 1.25em;
+	}
+h3 {
+	font-size: 1.12em;
+	}
+h4 {
+	font-size: 1.06em;
+	}
+	h5 {
+	font-size: 1.00em;
+	}
+h6 {
+	font-size: 0.70em;
+	color: #8b4513; /* saddlebrown */
+	}
+li {
+	color: #8b4513; /* saddlebrown */
+	font-weight: 200;
+	list-style-type: none;
+	}
+a {
+	font-weight: 500;
+	}
+a:link {
+	color: #000080; /* navy */
+	}
+a:visited {
+	color: #800080; /* purple */
+	}
+a:hover {
+	text-decoration: none;
+	color: #ffffff; /* white */
+	background-color: #008080; /*teal */	
+	}
+a:active {
+	color: #ffff00; /* yellow */
+	background-color: #008080; /*teal */	
+	}
+p {
+	color: #800000; /* maroon */
+	font-weight: normal;
+	}
+#header {
+	border-top: 0.188em solid #f4a460; /* border.top = 3 pixels sandybrown */
+	margin: 0;
+	}
+#header h1 {
+	font-size: 1.5em;
+	background-color: #008080; /*teal */	
+	color: #ffff00; /* yellow */
+	padding-top: 1.1em;
+	padding-bottom: 1.1em;
+	padding-left: 0.4em;
+	margin: 0;
+	}
+#tagline p {
+	color: #800000; /* maroon */
+	font-family: Georgia, Times, serif;
+	text-align: center;
+	font-style: italic;
+	font-weight: normal;
+	background-color: #ffdead; /* navajowhite*/
+	border-top: 0.188em solid #f4a460; /* sandybrown */
+	border-bottom: 0.188em solid #f4a460; /* sandybrown */
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	padding-left: 0.8em;
+	margin: 0;
+	}
+#sidebar {
+	float: left;
+	width: 16.667%; /* 12.5em */
+	height: 36.625em; /* 586 pixels */
+	background: url(backgrounds/navphoto.jpg) no-repeat;
+	position: relative;
+	}
+#sidebar div {
+	padding: 0em 0em 1em 0em;
+	}
+img.border {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border: 0.938em solid #ffffff; /* 15px solid white */	
+	}
+img.no_border {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	}
+#content {
+	float: right;
+	width: 83.333%; /* 62.5em */
+	background: #ffefd5; /* papayawhip */
+	position: relative;
+	}
+#content div {
+	padding: 0em 2.5em 0em 1.25em; /* 0px 40px 0px 20px */
+	}
+#footer {
+	clear: both;
+	text-align: center;
+	padding: 0.625em 1.25em 0.625em 1.25em; /* 10px 20px 10px 20px */
+	background: #bdb76b; /* darkkhaki */
+	color: #ffffff; /* white */
+	}
+.footer_text {
+	vertical-align: super;
+	}
+/*
+Used in about.html
+*/
+.name, .topics {
+	color: #b22222; /* firebrick */
+	font-family: Georgia, Times, serif;
+	font-weight: 500;
+	letter-spacing: 0.05em;
+	}
+table.about {
+	border: 0;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 4em;
+	}
+table.about th {
+	text-align: center;
+	font-size: 1.06em;
+	font-weight: 500;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: #800000; /* maroon */
+	}
+td .talk_name {
+	text-align: left;
+	vertical-align: text-top;
+	color: #b22222; /* firebrick */
+	font-family: Georgia, Times, serif;
+	font-size: 0.8em;
+	font-weight: normal;
+	line-height: 1.25em;
+	padding-right: 0.5em;
+	}
+td .talk_description {
+	text-align: left;
+	vertical-align: text-top;
+	padding-left: 0;
+	color: #a52a2a; /* brown */
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: normal;
+	line-height: 1.25em;
+	}
+/* 
+Used in contact.html
+*/
+form.contact {
+	padding: 0;
+	margin: 0;
+	margin-top: -0.938em; /* -15px */
+	line-height: 1.25em;  /* 125% */
+	}
+form.contact p {
+	font-weight: 500;
+	font-size: 1.0em; /* medium */
+	color: #8b4513; /* saddlebrown */
+	line-height: 1.25em;  /* 125% */
+	}
+form.contact fieldset {
+	border: 0.125em solid #8b4513;  /* 2px  saddlebrown */
+	padding: 0.625em;  /* 10px */
+	}
+form.contact legend {
+	font-weight: bold;
+	font-size: 1.0em; /* medium */
+	color: #8b4513; /* saddlebrown */
+	padding: 0.312em; /* 5px */
+	}
+form.contact label {
+	font-weight:bold;
+	font-size: 0.8em; /* small */
+	color: #8b4513; /* saddlebrown */
+	}
+form.contact label.fixedwidth {
+	display: block;
+	width: 25em; /* 400px */
+	float: left;
+	}
+form.contact .buttonarea input {   
+	background: #8b4513; /* saddlebrown */
+	color: #ffffff; /* white */
+	 font-weight: bold;   
+	padding: 0.312em; /* 5px */
+	 border: 0.062em solid #ffffff; /* 1px solid white */ 
+	}
+form.contact .buttonarea {   
+	text-align: center;   
+	padding: 0.25em; /* 4px */    
+	background-color: #f4a460;  /* sandybrown */
+	}
+/* 
+Used in events.html and prev_posts.html
+*/
+table.events, table.previous_posts {
+	width: 100%;
+	border: 0.062em solid #f4a460;	/* 1px solid sandybrown */
+	border-bottom: 0.125em solid #f4a460;	/* 2px solid sandybrown */
+	background: white;
+	border-collapse: collapse;
+	}
+table.events caption, table.previous_posts caption{
+	font-family: "Trebuchet MS", Geneva, Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	font-weight: 500;
+	color: #ffff00; /* yellow */
+	background: #008080; /* teal */
+	margin: 0;
+	padding: 0.5em 1.25em;
+	text-align: left;
+	border: 0.062em solid #f4a460;	/* 1px solid sandybrown */
+	border-top: 0.125em solid #f4a460;	/* 2px solid sandybrown */
+	border-bottom: 0.125em solid #f4a460;	/* 2px solid sandybrown */
+	border-bottom: 0px;
+	}
+	table.events th, table.events td, table.previous_posts th, table.previous_posts td {
+	margin: 0;
+	padding: 0.5em  1.25em;
+	text-align: center;
+	}
+.align_left {
+	text-align: left;
+	}
+.previous_posts td.post_page {
+	text-align: left;
+	}
+table.events tr, table.previous_posts tr{
+	background: #fffaf0; /* floralwhite */
+	}
+table.events tr.alt, table.previous_posts tr.alt {
+	background: #ffdead; /* navajowhite*/
+	}
+table.events th, table.previous_posts th {
+	font-family: "Trebuchet MS", Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	background: #ffdead; /* navajowhite*/
+	color: #800000; /* maroon */
+	border-top: 0px;
+	border-bottom: 0.125em solid #f4a460; /* 2px solid sandybrown */
+	}
+	table.previous_posts th {
+	font-size: 0.9em;
+	background: #d2b48c; /* tan */
+	color: #fffaf0; /* floralwhite */
+	}
+table.events td, table.previous_posts td {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	border-bottom: 0.062em solid #f4a460; /* 1px sandybrown */
+	font-size: 0.8em;
+	color: #800000; /* maroon */
+	}
+/*
+Used for table nagigation footer
+*/
+table.nav_footer {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+	color: #800000; /* maroon */
+	width: 100%;
+	}
+td.nav_footer_quartile {
+	text-align: center;
+	min-width: 25%;
+	/* border: 0.125em solid #f4a460; */
+	}
+/* 
+Used in faq.html
+*/
+.event_form {
+	font-weight: 600;
+	color: #8b4513; /* saddlebrown */
+	}
+/* 
+Used in faq.html
+*/
+.event_form {
+	font-weight: 600;
+	color: #8b4513; /* saddlebrown */
+	}
+/*
+Used in gallery.html
+*/
+.galleryphoto p, .indexphoto p {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0.5em;
+	width: 38.375em; /* 430px÷0.7 */	
+	font-size: 70%;
+	font-weight: bold;
+	line-height: 1.4em;
+	color: #a0522d; /* sienna*/
+	}
+.indexphoto p {
+	width: 35.714em; /* 400px÷0.7 */
+	}
+.photocredit, .imagecredit {
+	font-weight: normal;
+	color: #8b4513; /* saddlebrown */
+	}
+.imagecredit {
+	text-align: center;
+	font-size: 70%;
+	}
+.galleryphoto, .end_of_topic {
+	padding-bottom: 0.312em; /* 5 pixels */
+	border-bottom: solid #f4a460; /* sandybrown */
+	margin-bottom: 1.25em; /* 20 pixels */
+	}
+.photo_bottom {
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 0.312em; /* 5 pixels */
+	border-bottom: solid #f4a460; /* sandybrown */
+	width: 50%;
+	margin-bottom: 2.0em; /* 32 pixels */
+	}
+.vertical_space {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1.5em; /* 24 pixels */
+	}
+.big_vertical_space {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 2.0em; /* 32 pixels */
+	}
+/* 
+Used in topic.html
+*/
+blockquote {
+	color: #8b4513; /* saddlebrown*/
+	}
+.scripture {
+	color: #b22222; /* firebrick */
+	}
+ul {
+	color: maroon;
+	font-family: "Trebuchet MS", Geneva, Arial, Helvetica, sans-serif;
+	}
+/*
+Used for underlining text.
+*/
+.underline {
+	text-decoration: underline;
+	}
+	/*
+Used for underlining text.
+*/
+.ministryWomenLogo {
+	padding-right: 0.312em; /* 5px */
+	padding-bottom: 0.062em; /* 1px */
+	}
+.underline {
+	text-decoration: underline
+	}
+.feed {
+	margin-left: 3px;
+	padding: 0 0 0 19px;
+	background: url("http://www.maryhuntwebb.com/rss/feed-icon-14x14.png") no-repeat 0 50%;
+} 

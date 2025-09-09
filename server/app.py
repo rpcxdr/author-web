@@ -11,11 +11,14 @@ CORS(app)
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "stories.json")
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), "story_texts")
+# RENDERED_DIR = os.path.join(os.path.dirname(__file__), "rendered_stories")
+RENDERED_DIR = os.path.join(os.path.dirname(__file__), "../public/stories")
 lock = threading.Lock()
 
 def _ensure_content_dir():
     try:
         os.makedirs(CONTENT_DIR, exist_ok=True)
+        os.makedirs(RENDERED_DIR, exist_ok=True)  # ensure rendered dir exists
     except Exception:
         pass
 
@@ -32,6 +35,40 @@ def _read_content_file(filename):
             return f.read()
     except Exception:
         return ""
+
+def generate_published_pages(stories):
+    """
+    Remove existing rendered HTML files and render one HTML page per published story
+    using templates/story_template.html. Expects stories to include 'content', 'title', 'date', 'id' and 'published'.
+    """
+    _ensure_content_dir()
+    # clean existing rendered html files
+    try:
+        for fname in os.listdir(RENDERED_DIR):
+            if fname.endswith(".html"):
+                try:
+                    os.remove(os.path.join(RENDERED_DIR, fname))
+                except Exception:
+                    pass
+    except FileNotFoundError:
+        os.makedirs(RENDERED_DIR, exist_ok=True)
+    # render each published story
+    for s in stories:
+        pub = s.get("published")
+        # treat explicit false/"false" as not published; everything else -> published
+        if pub is False or (isinstance(pub, str) and pub.lower() == "false"):
+            continue
+
+        content = _read_content_file(s.get("content_file"))
+        title = s.get("title", "")
+        date = s.get("date", "")
+        rendered = render_template("story_template.html", title=title, date=date, content=content)
+        out_path = os.path.join(RENDERED_DIR, f"{s.get('id')}.html")
+        try:
+            with open(out_path, "w", encoding="utf-8") as f:
+                f.write(rendered)
+        except Exception:
+            pass
 
 def load_stories():
     """
@@ -88,6 +125,44 @@ def save_stories(stories):
         to_save.append(meta)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(to_save, f, ensure_ascii=False, indent=2)
+
+    # regenerate published HTML pages from the provided stories (uses in-memory content)
+    try:
+        generate_published_pages(stories)
+        generate_index_page(stories)
+    except Exception:
+        pass
+
+# add index generator below the published pages generator
+def generate_index_page(stories):
+    """
+    Render a single index/listing page from templates/story_list_template.html
+    and write it into the RENDERED_DIR as index.html.
+    """
+    _ensure_content_dir()
+
+    # Loop through stories to reformat dates before rendering
+    for story in stories:
+        # Check if the story has a date to process
+        if 'date' in story and story['date']:
+            try:
+                # Parse the date from YYYY-MM-DD format
+                date_obj = datetime.strptime(story['date'], '%Y-%m-%d')
+                # Format it into "Month day, year" and update the story
+                story['date'] = date_obj.strftime('%B %d, %Y')
+            except (ValueError, TypeError):
+                # If date format is invalid or not a string, leave it as is.
+                print(f"Warning: Could not parse date for story '{story.get('title', 'Unknown')}'.")
+                pass    
+    try:
+        # Render the template with the full stories list 
+        rendered = render_template("story_list_template.html", stories=stories)
+        out_path = os.path.join(RENDERED_DIR, "prev_posts.html")
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write(rendered)
+    except Exception:
+        # no-op on failure
+        pass
 
 @app.route("/api/stories", methods=["GET"])
 def list_stories():
