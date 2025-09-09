@@ -6,7 +6,7 @@ npm install
 # Start the servers:
 Web:
 ```
-npm start
+npm run dev
 ```
 Server:
 ``` 
