@@ -9,6 +9,7 @@ export default function EditStory() {
 
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
+  const [date, setDate] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -22,6 +23,7 @@ export default function EditStory() {
         if (!mounted) return;
         setTitle(data.title || "");
         setExcerpt(data.excerpt || "");
+        setDate(data.date || "");
         setContent(data.content || "");
       } catch (err) {
         if (mounted) setError(err.message || "Failed to load story");
@@ -37,7 +39,7 @@ export default function EditStory() {
     setSaving(true);
     setError(null);
 
-    const payload = { title: title.trim(), excerpt: excerpt.trim(), content };
+    const payload = { title: title.trim(), excerpt: excerpt.trim(), content, date: (date || "").trim() };
     try {
       await updateStory(id, payload);
       navigate("/");
@@ -73,6 +75,12 @@ export default function EditStory() {
               value={excerpt} 
               onChange={e => setExcerpt(e.target.value)} 
               rows={2} />
+          </label>
+        </p>
+        <p>
+          <label>
+            <div>Date</div>
+            <input value={date} onChange={e => setDate(e.target.value)} placeholder="YYYY-MM-DD or free-form" />
           </label>
         </p>
         <p>

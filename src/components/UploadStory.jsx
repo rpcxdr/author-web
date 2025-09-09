@@ -6,6 +6,7 @@ import CKEditorDemo from "./Editor";
 export default function UploadStory() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
+  const [date, setDate] = useState('');
   const [content, setContent] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -24,7 +25,8 @@ export default function UploadStory() {
       const newStory = await addStory({
         title: title.trim(),
         excerpt: excerpt.trim() || content.trim().slice(0, 140),
-        content: content.trim()
+        content: content.trim(),
+        date: (date || "").trim()
       });
       navigate(`/stories/${newStory.id}`);
     } catch (err) {
@@ -61,6 +63,17 @@ export default function UploadStory() {
             value={content} 
             onChange={(val) => setContent(val)}
           ></CKEditorDemo>
+          </label>
+        </div>
+        <div>
+          <label>
+            <div>Date</div>
+            <input 
+              type="date" 
+              value={date} 
+              onChange={e => setDate(e.target.value)} 
+              disabled={saving}
+            />
           </label>
         </div>
         {error && <p className="small" style={{ color: 'crimson' }}>{error}</p>}

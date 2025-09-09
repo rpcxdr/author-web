@@ -52,6 +52,7 @@ export default function StoryList() {
         stories.map(story => (
           <article key={story.id} className="story-card">
             <h3><Link to={`/stories/${story.id}`}>{story.title}</Link></h3>
+            <div className="small">{story.date || ""}</div>
             <p>{story.excerpt}</p>
             <div>
               <Link className="action-button" to={`/edit/${story.id}`} style={{ marginRight: 8 }}>

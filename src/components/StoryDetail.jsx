@@ -43,6 +43,7 @@ export default function StoryDetail() {
   return (
     <article className="story-detail">
       <h2>{story.title}</h2>
+      <div className="small">{story.date || ""}</div>
       <div className="content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(story.content) }} />
       <p><Link to="/">← Back to stories</Link></p>
     </article>

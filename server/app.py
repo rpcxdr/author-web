@@ -4,6 +4,7 @@ import threading
 import json
 import os
 import uuid
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -52,28 +53,14 @@ def load_stories():
     stories = []
     for s in raw:
         story = dict(s)  # copy
+        # ensure date field remains if present, otherwise set empty string
+        story["date"] = story.get("date", "")
         content = ""
         content_file = story.get("content_file")
         if content_file:
             content = _read_content_file(content_file)
-        elif "content" in story and story.get("content") is not None:
-            # migrate inline content to a file
-            content = story.get("content", "")
-            fname = story.get("id", uuid.uuid4().hex) + ".txt"
-            try:
-                _write_content_file(fname, content)
-                story["content_file"] = fname
-                changed = True
-            except Exception:
-                # fallback: keep inline content if write fails
-                pass
-        # Attach content in-memory for API responses (do not persist 'content' field)
         story["content"] = content
         stories.append(story)
-
-    if changed:
-        # Persist updated metadata (without 'content' fields)
-        save_stories(stories)
 
     return stories
 
@@ -85,14 +72,15 @@ def save_stories(stories):
     to_save = []
     for s in stories:
         meta = {k: v for k, v in s.items() if k != "content"}
-        # If there's still inline content but no content_file, try to write it
+        # ensure date key exists (empty string if missing)
+        if "date" not in meta:
+            meta["date"] = s.get("date", "")
         if "content_file" not in meta and "content" in s:
             try:
                 fname = s.get("id", uuid.uuid4().hex) + ".txt"
                 _write_content_file(fname, s["content"])
                 meta["content_file"] = fname
             except Exception:
-                # ignore write failures; leave inline (will not be saved)
                 pass
         to_save.append(meta)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
@@ -121,6 +109,7 @@ def create_story():
     title = (data.get("title") or "").strip()
     content = (data.get("content") or "").strip()
     excerpt = (data.get("excerpt") or "").strip()
+    date = (data.get("date") or "").strip()
 
     if not title or not content:
         abort(400, description="Missing required fields: title and content")
@@ -128,7 +117,6 @@ def create_story():
     new_id = uuid.uuid4().hex
     filename = new_id + ".txt"
 
-    # write content to its own file
     try:
         _write_content_file(filename, content)
     except Exception:
@@ -139,7 +127,7 @@ def create_story():
         "title": title,
         "excerpt": excerpt or (content[:140] + ("…" if len(content) > 140 else "")),
         "content_file": filename,
-        # include content in-memory for the response, but it will not be saved inline
+        "date": date or datetime.utcnow().date().isoformat(),
         "content": content
     }
 
@@ -176,9 +164,11 @@ def update_story(story_id):
         abort(400, description="Expected application/json")
     data = request.get_json()
     title = (data.get("title") or "").strip()
+    content = data.get("content") or ""
     excerpt = (data.get("excerpt") or "").strip()
-    content = data.get("content")
-    if not title or content is None or (isinstance(content, str) and content.strip() == ""):
+    date = (data.get("date") or "").strip()
+
+    if not title or not content:
         abort(400, description="Missing required fields: title and content")
 
     with lock:
@@ -186,26 +176,19 @@ def update_story(story_id):
         story = next((s for s in stories if s.get("id") == story_id), None)
         if not story:
             abort(404, description="Story not found")
-
+        # update content file if present
+        content_file = story.get("content_file")
+        if content_file:
+            try:
+                _write_content_file(content_file, content)
+            except Exception:
+                abort(500, description="Failed to write content file")
         # update metadata
         story["title"] = title
         story["excerpt"] = excerpt or (content[:140] + ("…" if len(content) > 140 else ""))
-
-        # ensure content_file exists
-        content_file = story.get("content_file")
-        if not content_file:
-            content_file = f"{story_id}.txt"
-            story["content_file"] = content_file
-
-        # write content to file
-        try:
-            _write_content_file(content_file, content)
-        except Exception:
-            abort(500, description="Failed to write story content file")
-
-        # keep content in-memory for response
+        story["date"] = date or story.get("date", datetime.utcnow().date().isoformat())
+        # keep story["content"] for response
         story["content"] = content
-
         save_stories(stories)
 
     return jsonify(story)
