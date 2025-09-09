@@ -4,7 +4,7 @@ import {
     ClassicEditor, Essentials, Paragraph, Bold, Italic,
     Image, ImageInsert, ImageCaption, ImageResize, ImageStyle, ImageToolbar, LinkImage,
     Font, FontSize, FontColor, FontBackgroundColor,
-    List, Heading,
+    List, Heading, BlockQuote,
  } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
 
@@ -13,7 +13,7 @@ export default function CKEditorDemo({ value = "", onChange = () => {} }) {
     <div style={{ marginTop: 8 }}>
       <CKEditor
             editor={ ClassicEditor }
-            data={ '<p>Hello world!</p>' }
+            data={ '' }
             onChange={ (event, editor) => onChange(editor.getData()) } 
             onReady={editor => {
                 editor.ui.view.editable.element.style.height = "400px";
@@ -26,15 +26,16 @@ export default function CKEditorDemo({ value = "", onChange = () => {} }) {
                     Essentials, Paragraph, Bold, Italic,
                     Image, ImageInsert, ImageCaption, ImageResize, ImageStyle, ImageToolbar, LinkImage,
                     Font, FontSize, FontColor, FontBackgroundColor,
-                    List, Heading,
+                    List, Heading, BlockQuote,
                 ],
                 toolbar: [ 
-                    'undo', 'redo', 
+                    'redo', 
+                    'undo', 
                     '|', 
                     'bold', 'italic', 
                     '|', 
                     'heading', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
-                    'numberedList', 'bulletedList', 
+                    'numberedList', 'bulletedList', "blockQuote",
                     '|',
                     'insertImageViaUrl', 'toggleImageCaption', 'imageTextAlternative', ],
                 image: {

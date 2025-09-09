@@ -43,7 +43,7 @@ export default function StoryList() {
     <div className="story-list">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <h2>Stories</h2>
-        <Link to="/upload" className="read-more">+ New Story</Link>
+        <Link to="/upload" className="action-button">+ New Story</Link>
       </div>
 
       {stories.length === 0 ? (
@@ -54,11 +54,11 @@ export default function StoryList() {
             <h3><Link to={`/stories/${story.id}`}>{story.title}</Link></h3>
             <p>{story.excerpt}</p>
             <div>
-              <Link className="read-more" to={`/edit/${story.id}`} style={{ marginRight: 8 }}>
+              <Link className="action-button" to={`/edit/${story.id}`} style={{ marginRight: 8 }}>
                 Edit
               </Link>
               <button
-                className="read-more"
+                className="action-button"
                 onClick={() => handleDelete(story.id)}
                 disabled={deleting === story.id}
                 style={{ marginRight: 8 }}
@@ -66,7 +66,7 @@ export default function StoryList() {
               >
                 {deleting === story.id ? 'Deleting…' : 'Delete'}
               </button>
-              <Link className="read-more" to={`/stories/${story.id}`}>Read full story</Link>
+              <Link className="action-button" to={`/stories/${story.id}`}>Read full story</Link>
             </div>
           </article>
         ))

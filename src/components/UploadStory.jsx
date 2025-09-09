@@ -39,27 +39,37 @@ export default function UploadStory() {
     <div className="upload-page">
       <h2>Upload a New Story</h2>
       <form onSubmit={handleSubmit} className="upload-form">
-        <label>
-          Title
-          <input value={title} onChange={e => setTitle(e.target.value)} required disabled={saving} />
-        </label>
-        <label>
-          Excerpt (optional)
-          <textarea value={excerpt} onChange={e => setExcerpt(e.target.value)} rows={3} disabled={saving} />
-        </label>
-        <label>
-          Content
-            <CKEditorDemo 
-              value={content} 
-              onChange={(val) => setContent(val)}
-            ></CKEditorDemo>
+        <div>
+          <label>
+            <div>Title</div>
+            <input value={title} onChange={e => setTitle(e.target.value)} required disabled={saving} />
           </label>
-
+        </div>
+        <div>
+          <label>
+            <div>Excerpt (optional)</div>
+            <textarea 
+              value={excerpt} onChange={e => setExcerpt(e.target.value)} 
+              rows={2} disabled={saving} 
+            />
+          </label>
+        </div>
+        <div>
+        <label>
+          <div>Content</div> 
+          <CKEditorDemo 
+            value={content} 
+            onChange={(val) => setContent(val)}
+          ></CKEditorDemo>
+          </label>
+        </div>
         {error && <p className="small" style={{ color: 'crimson' }}>{error}</p>}
 
         <div style={{ marginTop: 12 }}>
-          <button type="submit" disabled={saving}>
-            {saving ? 'Publishing…' : 'Publish Story'}
+          <button
+            className="action-button" 
+            type="submit" disabled={saving}>
+            {saving ? 'Saving…' : 'Add New Story'}
           </button>
           <Link to="/" style={{ marginLeft: 12 }}>Cancel</Link>
         </div>

@@ -63,8 +63,18 @@ main{
   color:var(--muted);
 }
 
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+}
+
 /* links and actions */
-.read-more{
+.action-button{
   display:inline-block;
   font-weight:600;
   font-family: Helvetica, Arial, Tahoma, Verdana, sans-serif;
@@ -77,7 +87,7 @@ main{
   border:1px solid rgba(139,83,35,0.08);
   cursor: pointer;
 }
-.read-more:hover{ transform:translateY(-1px); }
+.action-button:hover{ transform:translateY(-1px); }
 
 /* story detail */
 .story-detail{
@@ -103,5 +113,5 @@ main{
   main{ padding:14px; margin:12px; }
   .story-card{ padding:12px; }
   .story-card h2{ font-size:1.1rem; }
-  a.read-more{ font-size:0.9rem; padding:5px 8px; }
+  a.action-button{ font-size:0.9rem; padding:5px 8px; }
 }

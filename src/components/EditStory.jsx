@@ -55,26 +55,27 @@ export default function EditStory() {
     <div className="edit-page">
       <h2>Edit Story</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <p>
           <label>
-            Title
+            <div>Title</div>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
             />
           </label>
-        </div>
-        <div>
+        </p>
+        <p>
           <label>
-            Excerpt
-            <input
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-            />
+            <div>Excerpt</div>
+
+            <textarea 
+              value={excerpt} 
+              onChange={e => setExcerpt(e.target.value)} 
+              rows={2} />
           </label>
-        </div>
-        <div>
+        </p>
+        <p>
           <label>
             Content
             <CKEditorDemo 
@@ -82,12 +83,12 @@ export default function EditStory() {
               onChange={(val) => setContent(val)}
             ></CKEditorDemo>
           </label>
-        </div>
+        </p>
         <div>
-          <button type="submit" disabled={saving}>
+          <button class="action-button" type="submit" disabled={saving}>
             {saving ? "Saving…" : "Save"}
           </button>
-          <button type="button" onClick={() => navigate(-1)} style={{ marginLeft: 8 }}>
+          <button class="action-button" type="button" onClick={() => navigate(-1)} style={{ marginLeft: 8 }}>
             Cancel
           </button>
         </div>
