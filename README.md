@@ -1,7 +1,7 @@
 # Install
-npm install @ckeditor/ckeditor5-react
-npm install ckeditor5
-npm install dompurify
+```
+npm install
+```
 
 # Start the servers:
 Web:
