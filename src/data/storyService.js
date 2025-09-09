@@ -1,7 +1,8 @@
 var defaultStories = {}
 
 const STORAGE_KEY = 'author_web_stories_cache';
-const API_BASE = process.env.REACT_APP_API_BASE || ''; // e.g. set to 'http://localhost:4000' if needed
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+console.log('API_BASE', API_BASE);
 
 async function fetchJson(path, options) {
   const url = `${API_BASE}/api${path}`;
