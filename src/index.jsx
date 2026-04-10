@@ -6,7 +6,7 @@ import "./styles.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/admin">
       <div className="app">{/* .app matches your CSS selectors */}
         <App />
       </div>

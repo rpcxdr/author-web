@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# For cgi-bin debugging:
+# import cgitb
+# cgitb.enable()
+# print("Content-Type: text/plain\n")
+
 from flask import Flask, jsonify, request, abort, render_template, redirect, url_for
 from flask_cors import CORS
 import threading
@@ -199,7 +205,7 @@ def generate_index_page(stories):
                 story['date'] = date_obj.strftime('%B %d, %Y')
             except (ValueError, TypeError):
                 # If date format is invalid or not a string, leave it as is.
-                print(f"Warning: Could not parse date for story '{story.get('title', 'Unknown')}'.")
+                # print(f"Warning: Could not parse date for story '{story.get('title', 'Unknown')}'.")
                 pass    
     try:
         # Render the template with the full stories list 
@@ -319,7 +325,7 @@ def update_story(story_id):
         # keep story["content"] for response
         story["content"] = content
 
-        print(f"update_story: here4 {jsonify(story)}")
+        # print(f"update_story: here4 {jsonify(story)}")
 
         save_stories(stories)
 
@@ -333,6 +339,17 @@ def edit_page(story_id):
 def test():
     return "hello <b>world</b>"
 
+def is_cgi():
+    """
+    Detect if running under CGI (HostGator cgi-bin or similar).
+    """
+    return "GATEWAY_INTERFACE" in os.environ
+
 if __name__ == "__main__":
-    # default port 4000 to match client examples
-    app.run(host="0.0.0.0", port=4000, debug=True)
+    if is_cgi():
+        # Running under Apache CGI (HostGator shared hosting)
+        from wsgiref.handlers import CGIHandler
+        CGIHandler().run(app)
+    else:
+        # Running locally (development mode), default port 4000 to match client examples
+        app.run(host="0.0.0.0", port=4000, debug=True)
