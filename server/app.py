@@ -3,6 +3,7 @@ from flask_cors import CORS
 import threading
 import json
 import os
+import time
 import uuid
 from datetime import datetime
 
@@ -12,7 +13,54 @@ CORS(app)
 DATA_FILE = os.path.join(os.path.dirname(__file__), "stories.json")
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), "story_texts")
 RENDERED_DIR = os.path.join(os.path.dirname(__file__), "../public/stories")
-lock = threading.Lock()
+LOCK_FILE = DATA_FILE + ".lock"
+LOCK_MODE = os.environ.get("STORY_LOCK_MODE", "file").lower()
+
+class FileLock:
+    def __init__(self, path, poll_interval=0.05):
+        self.path = path
+        self.fd = None
+        self.poll_interval = poll_interval
+
+    def acquire(self):
+        while self.fd is None:
+            try:
+                self.fd = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_RDWR)
+                os.write(self.fd, str(os.getpid()).encode("utf-8"))
+                os.fsync(self.fd)
+            except FileExistsError:
+                time.sleep(self.poll_interval)
+            except OSError:
+                time.sleep(self.poll_interval)
+        return self
+
+    def release(self):
+        if self.fd is not None:
+            try:
+                os.close(self.fd)
+            except OSError:
+                pass
+            self.fd = None
+        try:
+            os.unlink(self.path)
+        except FileNotFoundError:
+            pass
+        except OSError:
+            pass
+
+    def __enter__(self):
+        return self.acquire()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.release()
+
+
+def make_lock(mode="thread"):
+    if mode == "file":
+        return FileLock(LOCK_FILE)
+    return threading.Lock()
+
+lock = make_lock(LOCK_MODE)
 
 def _ensure_content_dir():
     try:
@@ -280,6 +328,10 @@ def update_story(story_id):
 @app.route("/edit/<story_id>")
 def edit_page(story_id):
     return render_template("edit.html", story_id=story_id)
+
+@app.route('/test')
+def test():
+    return "hello <b>world</b>"
 
 if __name__ == "__main__":
     # default port 4000 to match client examples
