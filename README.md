@@ -1,9 +1,19 @@
-# Author Web
-This is a simple CMS for an author to publish stories.  It was created to explore the power of "vibe coding."
+# Author Webb
+
+# TODO
+Post name should be Post_YYYYMMDD.html
+Story page date should include day of the week: Posted Monday, May 1, 2020
+Story page title should have sibtitle space
+Fix focus bug in editor
+Add admin password
+Add image upload 
+Make "Title of Post" bar stop on top of the page.
+
 
 # Install
 ```
 npm install
+npm install --save-dev @types/node
 ```
 
 # Start the servers:
