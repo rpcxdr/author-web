@@ -1,12 +1,16 @@
+import { getAuthHeaders } from '../auth';
+
 var defaultStories = {}
 
 const STORAGE_KEY = 'author_web_stories_cache';
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 console.log('API_BASE', API_BASE);
 
-async function fetchJson(path, options) {
+async function fetchJson(path, options = {}) {
   const url = `${API_BASE}/api${path}`;
-  const res = await fetch(url, options);
+  const headers = { ...(options.headers || {}), ...getAuthHeaders() };
+  const res = await fetch(url, { ...options, headers });
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     throw new Error(`Request failed ${res.status} ${res.statusText} ${text}`);

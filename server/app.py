@@ -11,10 +11,48 @@ import json
 import os
 import time
 import uuid
+import base64
 from datetime import datetime
+from functools import wraps
 
 app = Flask(__name__)
 CORS(app)
+
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "mary")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "mary")
+
+def _build_token(username, password):
+    raw = f"{username}:{password}".encode("utf-8")
+    return base64.b64encode(raw).decode("utf-8")
+
+VALID_TOKEN = _build_token(ADMIN_USERNAME, ADMIN_PASSWORD)
+
+def _verify_token():
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        return False
+    token = auth_header[len("Bearer "):]
+    return token == VALID_TOKEN
+
+@app.before_request
+def authenticate_api():
+    if request.method == "OPTIONS" or not request.path.startswith("/api/"):
+        return None
+    if request.path == "/api/login":
+        return None
+    if not _verify_token():
+        return jsonify({"error": "Unauthorized"}), 401
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    if not request.is_json:
+        abort(400, description="Expected application/json")
+    data = request.get_json() or {}
+    username = (data.get("username") or "").strip()
+    password = data.get("password") or ""
+    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        return jsonify({"token": VALID_TOKEN})
+    return jsonify({"error": "Invalid credentials"}), 401
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "stories.json")
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), "story_texts")

@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getStories, removeStory } from '../data/storyService';
+import { logout } from '../auth';
 
 export default function StoryList() {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate('/login');
+  }
 
   useEffect(() => {
     let mounted = true;
@@ -43,7 +50,12 @@ export default function StoryList() {
     <div className="story-list">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <h2>Stories</h2>
-        <Link to="/upload" className="action-button">+ New Story</Link>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button className="action-button" type="button" onClick={handleLogout}>
+            Logout
+          </button>
+          <Link to="/upload" className="action-button">+ New Story</Link>
+        </div>
       </div>
 
       {stories.length === 0 ? (
