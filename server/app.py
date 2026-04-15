@@ -12,8 +12,10 @@ import os
 import time
 import uuid
 import base64
+import re
 from datetime import datetime
 from functools import wraps
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app)
@@ -57,6 +59,8 @@ def login():
 DATA_FILE = os.path.join(os.path.dirname(__file__), "stories.json")
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), "story_texts")
 RENDERED_DIR = os.path.join(os.path.dirname(__file__), "../public/stories")
+UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "../public/uploads")
+ALLOWED_IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
 LOCK_FILE = DATA_FILE + ".lock"
 LOCK_MODE = os.environ.get("STORY_LOCK_MODE", "file").lower()
 
@@ -110,8 +114,27 @@ def _ensure_content_dir():
     try:
         os.makedirs(CONTENT_DIR, exist_ok=True)
         os.makedirs(RENDERED_DIR, exist_ok=True)  # ensure rendered dir exists
+        os.makedirs(UPLOAD_DIR, exist_ok=True)
     except Exception:
         pass
+
+def _build_public_url(*parts):
+    base_path = (os.environ.get("VITE_APP_BASE") or "/").strip()
+    if not base_path.startswith("/"):
+        base_path = "/" + base_path
+    if not base_path.endswith("/"):
+        base_path += "/"
+    suffix = "/".join(part.strip("/") for part in parts if part)
+    return base_path + suffix
+
+def _make_upload_filename(original_name):
+    safe_name = secure_filename(original_name or "image")
+    stem, ext = os.path.splitext(safe_name)
+    ext = ext.lower()
+    if ext not in ALLOWED_IMAGE_EXTENSIONS:
+        abort(400, description="Unsupported image type")
+    clean_stem = re.sub(r"[^a-zA-Z0-9_-]+", "-", stem).strip("-") or "image"
+    return f"{clean_stem}-{uuid.uuid4().hex[:8]}{ext}"
 
 def _write_content_file(filename, text):
     _ensure_content_dir()
@@ -368,6 +391,67 @@ def update_story(story_id):
         save_stories(stories)
 
     return jsonify(story)
+
+@app.route("/api/images", methods=["POST"])
+def upload_image():
+    image = request.files.get("image")
+    if image is None or not image.filename:
+        return jsonify({"error": "Missing image file"}), 400
+
+    filename = _make_upload_filename(image.filename)
+    _ensure_content_dir()
+    destination = os.path.join(UPLOAD_DIR, filename)
+
+    try:
+        image.save(destination)
+    except Exception:
+        abort(500, description="Failed to save image")
+
+    url = _build_public_url("uploads", filename)
+    return jsonify({
+        "filename": filename,
+        "url": url,
+        "html": f'<img src="{url}" alt="" />'
+    }), 201
+
+@app.route("/api/images", methods=["GET"])
+def list_images():
+    _ensure_content_dir()
+
+    try:
+        filenames = os.listdir(UPLOAD_DIR)
+    except FileNotFoundError:
+        filenames = []
+
+    image_entries = []
+    for filename in filenames:
+        path = os.path.join(UPLOAD_DIR, filename)
+        if not os.path.isfile(path):
+            continue
+
+        _, ext = os.path.splitext(filename)
+        if ext.lower() not in ALLOWED_IMAGE_EXTENSIONS:
+            continue
+
+        try:
+            modified_time = os.path.getmtime(path)
+        except OSError:
+            modified_time = 0
+
+        image_entries.append((modified_time, filename))
+
+    image_entries.sort(key=lambda entry: entry[0], reverse=True)
+
+    images = []
+    for _, filename in image_entries:
+        path = os.path.join(UPLOAD_DIR, filename)
+
+        images.append({
+            "filename": filename,
+            "url": _build_public_url("uploads", filename)
+        })
+
+    return jsonify(images)
 
 @app.route("/edit/<story_id>")
 def edit_page(story_id):

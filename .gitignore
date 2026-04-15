@@ -147,3 +147,4 @@ public/stories/
 *.zip
 server/__pycache__/
 *.temp
+public/uploads/

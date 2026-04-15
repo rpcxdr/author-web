@@ -54,6 +54,7 @@ export default function StoryList() {
           <button className="action-button" type="button" onClick={handleLogout}>
             Logout
           </button>
+          <Link to="/images" className="action-button">Images</Link>
           <Link to="/upload" className="action-button">+ New Story</Link>
         </div>
       </div>
