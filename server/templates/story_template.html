@@ -57,6 +57,9 @@
             <div id="content">
                 <div>
                     <h2>{{ title }}</h2>
+                    {% if subtitle %}
+                    <h3 style="text-align:center;">{{ subtitle }}</h3>
+                    {% endif %}
                     <h4>by</h4>
                     <h4>Mary Hunt Webb</h4>
                     <h4>Posted {{ date }}</h4>

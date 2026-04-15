@@ -175,8 +175,14 @@ def generate_published_pages(stories):
 
         content = _read_content_file(s.get("content_file"))
         title = s.get("title", "")
+        subtitle = s.get("subtitle", "")
         date = s.get("date", "")
-        rendered = render_template("story_template.html", title=title, date=date, content=content)
+        try:
+            date_obj = datetime.strptime(date, "%Y-%m-%d")
+            date = date_obj.strftime("%A, %B %d, %Y")
+        except (ValueError, TypeError):
+            pass
+        rendered = render_template("story_template.html", title=title, subtitle=subtitle, date=date, content=content)
         out_path = os.path.join(RENDERED_DIR, f"{s.get('id')}.html")
         try:
             with open(out_path, "w", encoding="utf-8") as f:
@@ -300,7 +306,7 @@ def create_story():
     data = request.get_json()
     title = (data.get("title") or "").strip()
     content = (data.get("content") or "").strip()
-    excerpt = (data.get("excerpt") or "").strip()
+    subtitle = (data.get("subtitle") or "").strip()
     date = (data.get("date") or "").strip()
     published = data.get("published")
 
@@ -318,7 +324,7 @@ def create_story():
     new_story = {
         "id": new_id,
         "title": title,
-        "excerpt": excerpt or (content[:140] + ("…" if len(content) > 140 else "")),
+        "subtitle": subtitle,
         "content_file": filename,
         "date": date or datetime.utcnow().date().isoformat(),
         "published": published,
@@ -359,7 +365,7 @@ def update_story(story_id):
     data = request.get_json()
     title = (data.get("title") or "").strip()
     content = data.get("content") or ""
-    excerpt = (data.get("excerpt") or "").strip()
+    subtitle = (data.get("subtitle") or "").strip()
     date = (data.get("date") or "").strip()
     published = data.get("published")
 
@@ -380,7 +386,7 @@ def update_story(story_id):
                 abort(500, description="Failed to write content file")
         # update metadata
         story["title"] = title
-        story["excerpt"] = excerpt or (content[:140] + ("…" if len(content) > 140 else ""))
+        story["subtitle"] = subtitle
         story["date"] = date or story.get("date", datetime.utcnow().date().isoformat())
         story["published"] = published
         # keep story["content"] for response
@@ -453,13 +459,9 @@ def list_images():
 
     return jsonify(images)
 
-@app.route("/edit/<story_id>")
-def edit_page(story_id):
-    return render_template("edit.html", story_id=story_id)
-
 @app.route('/test')
 def test():
-    return "hello <b>world</b>"
+    return "Hello <b>world!</b>"
 
 def is_cgi():
     """

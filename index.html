@@ -4,8 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Webb Admin Page</title>
+    <style>
+      body.site-shell {
+        padding: clamp(12px, 2vw, 24px);
+      }
+
+      #root {
+        min-height: calc(100vh - (2 * clamp(12px, 2vw, 24px)));
+      }
+    </style>
   </head>
-  <body>
+  <body class="site-shell">
     <div id="root"></div>
     <script type="module" src="/src/index.jsx"></script>
   </body>

@@ -9,7 +9,7 @@ export default function EditStory() {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
+  const [subtitle, setSubtitle] = useState("");
   const [date, setDate] = useState("");
   const [published, setPublished] = useState(true);
   const [content, setContent] = useState("");
@@ -28,7 +28,7 @@ export default function EditStory() {
         const data = await getStory(id);
         if (!mounted) return;
         setTitle(data.title || "");
-        setExcerpt(data.excerpt || "");
+        setSubtitle(data.subtitle || "");
         setDate(data.date || "");
         setPublished(data.published === false || data.published === "false" ? false : true);
         setContent(data.content || "");
@@ -79,7 +79,7 @@ export default function EditStory() {
 
     const payload = {
       title: title.trim(),
-      excerpt: excerpt.trim(),
+      subtitle: subtitle.trim(),
       content,
       date: (date || "").trim(),
       published
@@ -114,11 +114,10 @@ export default function EditStory() {
         </p>
         <p>
           <label>
-            <div>Excerpt</div>
-            <textarea
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              rows={2}
+            <div>Subtitle</div>
+            <input
+              value={subtitle}
+              onChange={(e) => setSubtitle(e.target.value)}
             />
           </label>
         </p>

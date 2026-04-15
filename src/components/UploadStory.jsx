@@ -5,7 +5,7 @@ import CKEditorDemo from "./Editor";
 
 export default function UploadStory() {
   const [title, setTitle] = useState('');
-  const [excerpt, setExcerpt] = useState("");
+  const [subtitle, setSubtitle] = useState("");
   const [date, setDate] = useState("");
   const [published, setPublished] = useState(true);
   const [content, setContent] = useState('');
@@ -19,7 +19,7 @@ export default function UploadStory() {
     try {
       const created = await addStory({
         title: title.trim(),
-        excerpt: excerpt.trim() || content.trim().slice(0, 140),
+        subtitle: subtitle.trim(),
         content: content.trim(),
         date: (date || "").trim(),
         published
@@ -45,9 +45,9 @@ export default function UploadStory() {
         </div>
         <div>
           <label>
-            <div>Excerpt (optional)</div>
+            <div>Subtitle (optional)</div>
             <textarea 
-              value={excerpt} onChange={e => setExcerpt(e.target.value)} 
+              value={subtitle} onChange={e => setSubtitle(e.target.value)} 
               rows={2} disabled={saving} 
             />
           </label>

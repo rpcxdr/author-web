@@ -71,7 +71,7 @@ export default function StoryList() {
                 {story.published === false || story.published === "false" ? "Draft" : "Published"}
               </span>
             </div>
-            <p>{story.excerpt}</p>
+            <p>{story.subtitle}</p>
             <div>
               <Link className="action-button" to={`/edit/${story.id}`} style={{ marginRight: 8 }}>
                 Edit

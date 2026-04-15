@@ -49,7 +49,13 @@ export default function StoryDetail() {
           {story.published === false || story.published === "false" ? "Draft" : "Published"}
         </span>
       </div>
-      <div className="content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(story.content) }} />
+      <p>
+        <Link className="action-button" to={`/edit/${story.id}`}>Edit Story</Link>
+      </p>
+      <div
+        className="content ck-content"
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(story.content) }}
+      />
       <p><Link to="/">← Back to stories</Link></p>
     </article>
   );

@@ -147,6 +147,11 @@ main{
   gap: 8px;
 }
 
+.image-url-summary span[aria-hidden="true"]{
+  font-size: 1.3em;
+  line-height: 1;
+}
+
 .image-url-picker summary::-webkit-details-marker{
   display: none;
 }
@@ -282,6 +287,54 @@ input[type="file"] {
   white-space:pre-wrap;
   color:var(--text);
   font-size:1rem;
+}
+
+.story-detail .ck-content figure.image {
+  display: inline-block;
+  margin: 1em auto;
+  max-width: 100%;
+}
+
+.story-detail .ck-content figure.image.image_resized {
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+}
+
+.story-detail .ck-content figure.image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.story-detail .ck-content figure.image.image_resized img {
+  width: 100%;
+}
+
+.story-detail .ck-content figure.image figcaption {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6em;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+  background: rgba(0,0,0,0.04);
+}
+
+.story-detail .ck-content .image-style-align-left {
+  float: left;
+  margin-right: 1.5em;
+}
+
+.story-detail .ck-content .image-style-align-right {
+  float: right;
+  margin-left: 1.5em;
+}
+
+.story-detail .ck-content .image-style-align-center {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* status badges */
