@@ -105,11 +105,11 @@ export default function EditStory() {
         <p>
           <label>
             Content
-            <CKEditorDemo 
-              value={content} 
-              onChange={(val) => setContent(val)}
-            ></CKEditorDemo>
           </label>
+          <CKEditorDemo 
+            value={content} 
+            onChange={(val) => setContent(val)}
+          ></CKEditorDemo>
         </p>
         <div>
           <button class="action-button" type="submit" disabled={saving}>
