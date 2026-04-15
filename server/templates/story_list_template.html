@@ -3,6 +3,13 @@
         <title>Previous Posts</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <link href="/style1.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            th {
+                position: sticky;
+                top: 0;
+                z-index: 2;
+            }
+        </style>
     </head>
     <body>
         <div id="wrap">
@@ -42,10 +49,6 @@
                                 <td class="post_page">{{ s.date }}</td>
                             </tr>
                             {% endfor %}
-                            <tr>
-                            <th scope="col"><div class="align_left">Title of Post</div></th>
-                            <th scope="col"><div class="align_left">Posting Date</div></th>
-                        </tr>
                     </tbody></table> <!-- end of class "previous_posts" -->
                     <p>Mary loves sharing her presentations with a variety of groups. For more information about any of her events, please get in contact with the event's organizer.</p>
                     <div class="end_of_topic"></div>
