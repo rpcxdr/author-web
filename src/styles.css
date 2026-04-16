@@ -310,12 +310,6 @@ input[type="file"] {
   font-size:1rem;
 }
 
-.story-detail .ck-content figure.image {
-  display: inline-block;
-  margin: 1em auto;
-  max-width: 100%;
-}
-
 .story-detail .ck-content figure.image.image_resized {
   box-sizing: border-box;
   display: block;
