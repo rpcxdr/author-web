@@ -1,9 +1,8 @@
 # Author Webb
 
 # TODO
-Post name should be Post_YYYYMMDD.html
-Story page date should include day of the week: Posted Monday, May 1, 2020
-Story page title should have subtitle space
+Add image upload on edit page
+
 
 # Install
 ```

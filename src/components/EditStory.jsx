@@ -74,14 +74,21 @@ export default function EditStory() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setSaving(true);
     setError(null);
+
+    const trimmedDate = (date || "").trim();
+    if (!trimmedDate) {
+      setError("Date is required");
+      return;
+    }
+
+    setSaving(true);
 
     const payload = {
       title: title.trim(),
       subtitle: subtitle.trim(),
       content,
-      date: (date || "").trim(),
+      date: trimmedDate,
       published
     };
 
@@ -128,6 +135,7 @@ export default function EditStory() {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+              required
               placeholder="YYYY-MM-DD or free-form"
             />
           </label>

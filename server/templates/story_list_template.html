@@ -45,7 +45,7 @@
                             </tr>
                             {% for s in stories %}
                             <tr class="{{ 'alt' if loop.index0 % 2 == 1 else '' }}">
-                                <td class="post_page"><a href="{{ s.id }}.html">{{ s.title }}</a></td>
+                                <td class="post_page"><a href="{{ s.published_filename }}">{{ s.title }}</a></td>
                                 <td class="post_page">{{ s.date }}</td>
                             </tr>
                             {% endfor %}

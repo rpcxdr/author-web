@@ -150,6 +150,14 @@ def _read_content_file(filename):
     except Exception:
         return ""
 
+def _published_story_filename(story):
+    date_value = (story.get("date") or "").strip()
+    try:
+        date_obj = datetime.strptime(date_value, "%Y-%m-%d")
+        return f"Post_{date_obj.strftime('%Y%m%d')}.html"
+    except (ValueError, TypeError):
+        return f"Post_{story.get('id')}.html"
+
 def generate_published_pages(stories):
     """
     Remove existing rendered HTML files and render one HTML page per published story
@@ -183,7 +191,7 @@ def generate_published_pages(stories):
         except (ValueError, TypeError):
             pass
         rendered = render_template("story_template.html", title=title, subtitle=subtitle, date=date, content=content)
-        out_path = os.path.join(RENDERED_DIR, f"{s.get('id')}.html")
+        out_path = os.path.join(RENDERED_DIR, _published_story_filename(s))
         try:
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write(rendered)
@@ -261,22 +269,27 @@ def generate_index_page(stories):
     """
     _ensure_content_dir()
 
-    # Loop through stories to reformat dates before rendering
+    stories_for_index = []
+
+    # Build template-friendly story objects with formatted dates and rendered filenames.
     for story in stories:
+        story_for_index = dict(story)
+        story_for_index["published_filename"] = _published_story_filename(story)
         # Check if the story has a date to process
-        if 'date' in story and story['date']:
+        if "date" in story_for_index and story_for_index["date"]:
             try:
                 # Parse the date from YYYY-MM-DD format
-                date_obj = datetime.strptime(story['date'], '%Y-%m-%d')
+                date_obj = datetime.strptime(story_for_index["date"], "%Y-%m-%d")
                 # Format it into "Month day, year" and update the story
-                story['date'] = date_obj.strftime('%B %d, %Y')
+                story_for_index["date"] = date_obj.strftime("%B %d, %Y")
             except (ValueError, TypeError):
                 # If date format is invalid or not a string, leave it as is.
                 # print(f"Warning: Could not parse date for story '{story.get('title', 'Unknown')}'.")
-                pass    
+                pass
+        stories_for_index.append(story_for_index)
     try:
         # Render the template with the full stories list 
-        rendered = render_template("story_list_template.html", stories=stories)
+        rendered = render_template("story_list_template.html", stories=stories_for_index)
         out_path = os.path.join(RENDERED_DIR, "prev_posts.html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(rendered)
