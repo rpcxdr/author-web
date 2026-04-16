@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getStory, updateStory } from "../data/storyService";
 import { getImages } from "../data/imageService";
 import CKEditorDemo from "./Editor";
+import ImageUploader from "./ImageUploader";
 
 export default function EditStory() {
   const { id } = useParams();
@@ -19,6 +20,7 @@ export default function EditStory() {
   const [images, setImages] = useState([]);
   const [imagesLoading, setImagesLoading] = useState(true);
   const [imageStatus, setImageStatus] = useState("");
+  const [imageUploaderOpen, setImageUploaderOpen] = useState(false);
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
 
   useEffect(() => {
@@ -43,24 +45,27 @@ export default function EditStory() {
 
   useEffect(() => {
     let mounted = true;
-    (async () => {
-      try {
-        const data = await getImages();
-        if (mounted) {
-          setImages(Array.isArray(data) ? data : []);
-        }
-      } catch (err) {
-        if (mounted) {
-          setImageStatus(err.message || "Failed to load images");
-        }
-      } finally {
-        if (mounted) {
-          setImagesLoading(false);
-        }
-      }
-    })();
+    loadImages(mounted);
     return () => { mounted = false; };
   }, []);
+
+  async function loadImages(mounted = true) {
+    try {
+      const data = await getImages();
+      if (mounted) {
+        setImages(Array.isArray(data) ? data : []);
+        setImageStatus("");
+      }
+    } catch (err) {
+      if (mounted) {
+        setImageStatus(err.message || "Failed to load images");
+      }
+    } finally {
+      if (mounted) {
+        setImagesLoading(false);
+      }
+    }
+  }
 
   async function handleImageClick(url) {
     try {
@@ -69,6 +74,19 @@ export default function EditStory() {
     } catch (err) {
       console.error("Failed to copy image URL", err);
       setImageStatus("Could not copy the image URL.");
+    }
+  }
+
+  async function handleImageUploadComplete(uploaded) {
+    setImagesLoading(true);
+    setImageStatus("Upload complete. Click any image below to copy its URL.");
+    await loadImages(true);
+
+    try {
+      await navigator.clipboard.writeText(uploaded.url);
+      setImageStatus("Upload complete. Image URL copied to clipboard.");
+    } catch (err) {
+      console.error("Failed to copy uploaded image URL", err);
     }
   }
 
@@ -151,44 +169,65 @@ export default function EditStory() {
             <small className="small">checked = published</small>
           </label>
         </p>
-        <p>
-          <label>
-            <div>Get an image URL</div>
-            <details
-              className="image-url-picker"
-              open={imagePickerOpen}
-              onToggle={(event) => setImagePickerOpen(event.currentTarget.open)}
-            >
-              <summary className="action-button image-url-summary">
-                <span aria-hidden="true">{imagePickerOpen ? "▾" : "▸"}</span>
-                <span>{imagePickerOpen ? "Hide Image List" : "Open Image List"}</span>
-              </summary>
-              <div className="image-url-picker-panel">
-                {imagesLoading ? (
-                  <p className="small">Loading images...</p>
-                ) : images.length === 0 ? (
-                  <p className="small">No uploaded images yet.</p>
-                ) : (
-                  <div className="image-url-grid">
-                    {images.map((image) => (
-                      <button
-                        key={image.filename}
-                        className="image-url-item"
-                        type="button"
-                        onClick={() => handleImageClick(image.url)}
-                        title={`Copy ${image.filename}`}
-                      >
-                        <img src={image.url} alt={image.filename} className="image-url-thumb" />
-                        <span className="image-url-name">{image.filename}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {imageStatus && <p className="small">{imageStatus}</p>}
-              </div>
-            </details>
-          </label>
-        </p>
+        <div>
+          <div>Get an image URL</div>
+          <div className="edit-image-tools">
+            <div className="story-card edit-image-tool">
+              <details
+                className="image-url-picker"
+                open={imageUploaderOpen}
+                onToggle={(event) => setImageUploaderOpen(event.currentTarget.open)}
+              >
+                <summary className="action-button image-url-summary">
+                  <span className="image-url-indicator" aria-hidden="true">{imageUploaderOpen ? "v" : ">"}</span>
+                  <span>{imageUploaderOpen ? "Hide Upload Panel" : "Upload a New Image"}</span>
+                </summary>
+                <div className="image-url-picker-panel">
+                  <ImageUploader
+                    title={null}
+                    description="Add an image here, then 'Insert image via URL' in the editor."
+                    onUploadComplete={handleImageUploadComplete}
+                  />
+                </div>
+              </details>
+            </div>
+            <div className="story-card edit-image-tool">
+              <details
+                className="image-url-picker"
+                open={imagePickerOpen}
+                onToggle={(event) => setImagePickerOpen(event.currentTarget.open)}
+              >
+                <summary className="action-button image-url-summary">
+                  <span className="image-url-indicator" aria-hidden="true">{imagePickerOpen ? "v" : ">"}</span>
+                  <span>{imagePickerOpen ? "Hide Image List" : "Open Image List"}</span>
+                </summary>
+                <div className="image-url-picker-panel">
+                  {imagesLoading ? (
+                    <p className="small">Loading images...</p>
+                  ) : images.length === 0 ? (
+                    <p className="small">No uploaded images yet.</p>
+                  ) : (
+                    <div className="image-url-grid">
+                      {images.map((image) => (
+                        <button
+                          key={image.filename}
+                          className="image-url-item"
+                          type="button"
+                          onClick={() => handleImageClick(image.url)}
+                          title={`Copy ${image.filename}`}
+                        >
+                          <img src={image.url} alt={image.filename} className="image-url-thumb" />
+                          <span className="image-url-name">{image.filename}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {imageStatus && <p className="small">{imageStatus}</p>}
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
         <p>
           <label>
             Content
