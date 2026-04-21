@@ -23,6 +23,14 @@ CORS(app)
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "mary")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "mary")
 
+def is_cgi():
+    """
+    Detect if running under CGI (HostGator cgi-bin or similar).
+    """
+    return "GATEWAY_INTERFACE" in os.environ
+
+VITE_IMAGE_BASE_PATH = "/public/" if is_cgi() else "/"
+
 def _build_token(username, password):
     raw = f"{username}:{password}".encode("utf-8")
     return base64.b64encode(raw).decode("utf-8")
@@ -30,7 +38,7 @@ def _build_token(username, password):
 VALID_TOKEN = _build_token(ADMIN_USERNAME, ADMIN_PASSWORD)
 
 def _verify_token():
-    auth_header = request.headers.get("Authorization", "")
+    auth_header = request.headers.get("Xauthorization", "")
     if not auth_header.startswith("Bearer "):
         return False
     token = auth_header[len("Bearer "):]
@@ -119,7 +127,7 @@ def _ensure_content_dir():
         pass
 
 def _build_public_url(*parts):
-    base_path = (os.environ.get("VITE_APP_BASE") or "/").strip()
+    base_path = VITE_IMAGE_BASE_PATH.strip()
     if not base_path.startswith("/"):
         base_path = "/" + base_path
     if not base_path.endswith("/"):
@@ -429,8 +437,7 @@ def upload_image():
     url = _build_public_url("uploads", filename)
     return jsonify({
         "filename": filename,
-        "url": url,
-        "html": f'<img src="{url}" alt="" />'
+        "url": url
     }), 201
 
 @app.route("/api/images", methods=["GET"])
@@ -475,12 +482,6 @@ def list_images():
 @app.route('/test')
 def test():
     return "Hello <b>world!</b>"
-
-def is_cgi():
-    """
-    Detect if running under CGI (HostGator cgi-bin or similar).
-    """
-    return "GATEWAY_INTERFACE" in os.environ
 
 if __name__ == "__main__":
     if is_cgi():

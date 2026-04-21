@@ -12,7 +12,7 @@ export function isLoggedIn() {
 
 export function getAuthHeaders() {
   const token = getToken();
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  return token ? { Xauthorization: `Bearer ${token}` } : {};
 }
 
 export async function login(username, password) {
