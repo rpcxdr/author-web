@@ -1,7 +1,7 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 
 import { 
-    ClassicEditor, Essentials, Paragraph, Bold, Italic,
+    ClassicEditor, Alignment, Essentials, Paragraph, Bold, Italic,
     Image, ImageInsert, ImageCaption, ImageResize, ImageStyle, ImageToolbar, LinkImage,
     Font, FontSize, FontColor, FontBackgroundColor,
     List, Heading, BlockQuote,
@@ -23,7 +23,7 @@ export default function CKEditorDemo({ value = "", onChange = () => {} }) {
             config={ {
                 licenseKey: 'GPL',
                 plugins: [ 
-                    Essentials, Paragraph, Bold, Italic,
+                    Alignment, Essentials, Paragraph, Bold, Italic, 
                     Image, ImageInsert, ImageCaption, ImageResize, ImageStyle, ImageToolbar, LinkImage,
                     Font, FontSize, FontColor, FontBackgroundColor,
                     List, Heading, BlockQuote,
@@ -32,7 +32,9 @@ export default function CKEditorDemo({ value = "", onChange = () => {} }) {
                     'redo', 
                     'undo', 
                     '|', 
-                    'bold', 'italic', 
+                    'bold', 'italic',
+                    '|', 
+                    'alignment:left', 'alignment:center', 'alignment:right',
                     '|', 
                     'heading', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
                     'numberedList', 'bulletedList', "blockQuote",
