@@ -35,3 +35,16 @@ export async function uploadImage(file) {
   }
   return body;
 }
+
+export async function deleteImage(filename) {
+  const res = await fetch(`${API_BASE}/api/images/${encodeURIComponent(filename)}`, {
+    method: "DELETE",
+    headers: { ...getAuthHeaders() },
+  });
+
+  if (!res.ok) {
+    const body = await parseJson(res);
+    throw new Error(body.error || `Failed to delete image ${filename}`);
+  }
+  return true;
+}

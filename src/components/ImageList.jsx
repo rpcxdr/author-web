@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getImages } from "../data/imageService";
+import { getImages, deleteImage } from "../data/imageService";
 
 export default function ImageList() {
   const [images, setImages] = useState([]);
@@ -40,6 +40,21 @@ export default function ImageList() {
     }
   }
 
+  const [deleting, setDeleting] = useState(null);
+
+  async function handleDelete(filename) {
+    if (!window.confirm(`Delete ${filename}? This cannot be undone.`)) return;
+    setDeleting(filename);
+    try {
+      await deleteImage(filename);
+      setImages((prev) => prev.filter((i) => i.filename !== filename));
+    } catch (err) {
+      alert(err.message || "Failed to delete image");
+    } finally {
+      setDeleting(null);
+    }
+  }
+
   if (loading) {
     return <div className="center small">Loading images...</div>;
   }
@@ -73,6 +88,19 @@ export default function ImageList() {
             <button className="action-button" type="button" onClick={() => copyUrl(image.url)}>
               Copy URL
             </button>
+            {image.is_used ? (
+              <div style={{ display: "inline-block", marginLeft: 8 }} className="small">In Use</div>
+            ) : (
+              <button
+                className="action-button"
+                type="button"
+                onClick={() => handleDelete(image.filename)}
+                disabled={deleting === image.filename}
+                style={{ marginLeft: 8 }}
+              >
+                {deleting === image.filename ? "Deleting..." : "Delete"}
+              </button>
+            )}
           </article>
         ))
       )}

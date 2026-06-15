@@ -16,6 +16,7 @@ import re
 from datetime import datetime
 from functools import wraps
 from werkzeug.utils import secure_filename
+import traceback
 
 app = Flask(__name__)
 CORS(app)
@@ -239,6 +240,40 @@ def load_stories():
 
     return stories
 
+def find_unused_images(filenames):
+    """
+    Given a list of image filenames (or paths), return a list of those
+    filenames that are not referenced in any story content returned by
+    `load_stories()`.
+
+    The comparison is performed against the basename of each provided
+    filename and also checks for the public uploads URL form built by
+    `_build_public_url("uploads", filename)`.
+    """
+    if not filenames:
+        return []
+
+    # Normalize input to basenames for matching, but preserve original
+    # values for the returned list ordering.
+    basename_map = {os.path.basename(f): f for f in filenames}
+    basenames = set(basename_map.keys())
+    referenced = set()
+
+    stories = load_stories()
+    for s in stories:
+        # search in main content and also title/subtitle to be safe
+        content = (s.get("content") or "") + "\n" + (s.get("title") or "") + "\n" + (s.get("subtitle") or "")
+        for name in list(basenames - referenced):
+            # check both raw filename occurrence and public upload URL
+            public_url = _build_public_url("uploads", name)
+            if name in content or public_url in content:
+                referenced.add(name)
+
+    unused = [basename_map[name] for name in basenames if name not in referenced]
+    # Return results in the same order as provided by the caller
+    ordered_unused = [f for f in filenames if os.path.basename(f) in {os.path.basename(u) for u in unused}]
+    return ordered_unused
+
 def save_stories(stories):
     """
     Persists story metadata to stories.json. Excludes the in-memory 'content'
@@ -260,9 +295,9 @@ def save_stories(stories):
                 meta["content_file"] = fname
             except Exception:
                 pass 
-        if duplicate_date_counters[meta["date"]]: # if we've seen this date before, increment counter and assign index
+        if duplicate_date_counters.get(meta.get("date")): # if we've seen this date before, increment counter and assign index
             duplicate_date_counters[meta["date"]] += 1
-            meta["duplicate_date_index"] = f"-{duplicate_date_counters[meta["date"]]}" 
+            meta["duplicate_date_index"] = f"-{duplicate_date_counters[meta['date']]}" # '' for python 3.11 compatibility
         else:
             duplicate_date_counters[meta["date"]] = 1
             meta["duplicate_date_index"] = "" # for first occurrence, index is empty string
@@ -390,43 +425,48 @@ def delete_story(story_id):
 
 @app.route("/api/stories/<story_id>", methods=["PUT"])
 def update_story(story_id):
-    if not request.is_json:
-        abort(400, description="Expected application/json")
-    data = request.get_json()
-    title = (data.get("title") or "").strip()
-    content = data.get("content") or ""
-    subtitle = (data.get("subtitle") or "").strip()
-    date = (data.get("date") or "").strip()
-    published = data.get("published")
+    try:
+        if not request.is_json:
+            abort(400, description="Expected application/json")
+        data = request.get_json()
+        title = (data.get("title") or "").strip()
+        content = data.get("content") or ""
+        subtitle = (data.get("subtitle") or "").strip()
+        date = (data.get("date") or "").strip()
+        published = data.get("published")
 
-    if not title or not content:
-        abort(400, description="Missing required fields: title and content")
+        if not title or not content:
+            abort(400, description="Missing required fields: title and content")
 
-    with lock:
-        stories = load_stories()
-        story = next((s for s in stories if s.get("id") == story_id), None)
-        if not story:
-            abort(404, description="Story not found")
-        # update content file if present
-        content_file = story.get("content_file")
-        if content_file:
-            try:
-                _write_content_file(content_file, content)
-            except Exception:
-                abort(500, description="Failed to write content file")
-        # update metadata
-        story["title"] = title
-        story["subtitle"] = subtitle
-        story["date"] = date or story.get("date", datetime.utcnow().date().isoformat())
-        story["published"] = published
-        # keep story["content"] for response
-        story["content"] = content
+        with lock:
+            stories = load_stories()
+            story = next((s for s in stories if s.get("id") == story_id), None)
+            if not story:
+                abort(404, description="Story not found")
+            # update content file if present
+            content_file = story.get("content_file")
+            if content_file:
+                try:
+                    _write_content_file(content_file, content)
+                except Exception:
+                    abort(500, description="Failed to write content file")
+            # update metadata
+            story["title"] = title
+            story["subtitle"] = subtitle
+            story["date"] = date or story.get("date", datetime.utcnow().date().isoformat())
+            story["published"] = published
+            # keep story["content"] for response
+            story["content"] = content
 
-        # print(f"update_story: here4 {jsonify(story)}")
+            # print(f"update_story: here4 {jsonify(story)}")
 
-        save_stories(stories)
+            save_stories(stories)
 
-    return jsonify(story)
+        return jsonify(story)
+        _write_content_file(filename, content)
+    except Exception as e:
+        full_details = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+        abort(500, description=f"Failed to write story content file {full_details}")
 
 @app.route("/api/images", methods=["POST"])
 def upload_image():
@@ -454,12 +494,18 @@ def list_images():
     _ensure_content_dir()
 
     try:
-        filenames = os.listdir(UPLOAD_DIR)
+        all_filenames = os.listdir(UPLOAD_DIR)
     except FileNotFoundError:
-        filenames = []
+        all_filenames = []
 
-    image_entries = []
-    for filename in filenames:
+    # Precompute unused image names from the unfiltered filename list
+    try:
+        unused_set = set(find_unused_images(all_filenames))
+    except Exception:
+        unused_set = set()
+
+    images = []
+    for filename in all_filenames:
         path = os.path.join(UPLOAD_DIR, filename)
         if not os.path.isfile(path):
             continue
@@ -473,24 +519,58 @@ def list_images():
         except OSError:
             modified_time = 0
 
-        image_entries.append((modified_time, filename))
-
-    image_entries.sort(key=lambda entry: entry[0], reverse=True)
-
-    images = []
-    for _, filename in image_entries:
-        path = os.path.join(UPLOAD_DIR, filename)
-
         images.append({
             "filename": filename,
-            "url": _build_public_url("uploads", filename)
+            "url": _build_public_url("uploads", filename),
+            "is_used": filename not in unused_set,
+            "modified_time": modified_time,
         })
+
+    # Sort by modified_time descending
+    images.sort(key=lambda x: x.get("modified_time", 0), reverse=True)
 
     return jsonify(images)
 
 @app.route('/test')
 def test():
     return "Hello <b>world!</b>"
+
+
+@app.route("/api/images/<path:filename>", methods=["DELETE"])
+def delete_image(filename):
+    """
+    Delete a single uploaded image by filename. If the image is referenced
+    in any story content, return an error and do not delete.
+    """
+    # Normalize to basename to avoid directory traversal
+    basename = os.path.basename(filename)
+    if not basename:
+        abort(400, description="Invalid filename")
+
+    _, ext = os.path.splitext(basename)
+    if ext.lower() not in ALLOWED_IMAGE_EXTENSIONS:
+        abort(400, description="Unsupported image type")
+
+    path = os.path.join(UPLOAD_DIR, basename)
+    if not os.path.exists(path) or not os.path.isfile(path):
+        abort(404, description="Image not found")
+
+    with lock:
+        try:
+            unused = find_unused_images([basename])
+        except Exception:
+            abort(500, description="Failed to determine image usage")
+
+        # If the filename is not returned as unused, it's considered in use
+        if basename not in unused:
+            return jsonify({"error": "Image is in use"}), 400
+
+        try:
+            os.remove(path)
+        except Exception:
+            abort(500, description="Failed to delete image")
+
+    return "", 204
 
 if __name__ == "__main__":
     if is_cgi():

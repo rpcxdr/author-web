@@ -72,9 +72,17 @@ On Windows, build and zip:
 Upload and unzip on hostgator:
 1. Go to the admin folder:
 https://gator3212.hostgator.com:2083/cpsess4311619030/frontend/jupiter/filemanager/index.html
+  1. Click `public_html`
+  1. Click `admin`
 1. Click upload and upload the zip
-1. Right click unzip the file.
+  1. In Visual studio, right click on dist.zip and select Copy Path
+  1. In the web site's Upload page, select "Overwrite existing files"
+  1. Click Select File
+  1. In the Open dialog, in the top text box, paste the path.  Delete the file name from the path, press enter, then select the zip file.
+  1. Navigate again to `public_html/admin`
+1. Right click "Extract" (unzip) the file.
 1. Go to public_html/cgi-bin and upload app.py
+  1. Change persmissions to 755 if needed (Right click Change Permissions, enter 755, confirm Change Permissions)
 1. Go to public_html/cgi-bin/templates and upload story_template.html and story_list_template.html
 1. Go to public_html/public/stories and upload imagestyle.css and style1.css
 
@@ -83,3 +91,6 @@ Testing:
 https://www.maryhuntwebb.com/cgi-bin/app.py/test
 
 NOTE: If you edit Python directly in cPanel on Hostgator, click "Use Legacy Editor".  Otherwise the script will fail to execute and return a 500 error.
+
+Some error logs will appear here: https://gator3212.hostgator.com:2083/cpsess5592826515/frontend/jupiter/stats/errlog.html
+* cPanel home > Metrics sub heading > Errors link
