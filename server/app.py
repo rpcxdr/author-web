@@ -173,6 +173,7 @@ def generate_published_pages(stories):
     Remove existing rendered HTML files and render one HTML page per published story
     using templates/story_template.html. Expects stories to include 'content', 'title', 'date', 'id' and 'published'.
     """
+    
     _ensure_content_dir()
     # clean existing rendered html files
     try:
@@ -185,6 +186,7 @@ def generate_published_pages(stories):
     except FileNotFoundError:
         os.makedirs(RENDERED_DIR, exist_ok=True)
     # render each published story
+
     for s in stories:
         pub = s.get("published")
         # treat explicit false/"false" as not published; everything else -> published
@@ -199,14 +201,14 @@ def generate_published_pages(stories):
             date_obj = datetime.strptime(date, "%Y-%m-%d")
             date = date_obj.strftime("%A, %B %d, %Y")
         except (ValueError, TypeError):
-            pass
+           raise ValueError("This is a custom error message aaoh!")
         rendered = render_template("story_template.html", title=title, subtitle=subtitle, date=date, content=content)
         out_path = os.path.join(RENDERED_DIR, _published_story_filename(s))
         try:
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write(rendered)
-        except Exception:
-            pass
+        except Exception as e:
+           raise ValueError("".join(traceback.format_exception(type(e), e, e.__traceback__)))
 
 def load_stories():
     """
@@ -307,11 +309,13 @@ def save_stories(stories):
         json.dump(to_save, f, ensure_ascii=False, indent=2)
 
     # regenerate published HTML pages from the provided stories (uses in-memory content)
-    try:
-        generate_published_pages(stories)
-        generate_index_page(stories)
-    except Exception:
-        pass
+    generate_published_pages(stories)
+    generate_index_page(stories)
+    #try:
+    #    generate_published_pages(stories)
+    #    generate_index_page(stories)
+    #except Exception:
+    #    pass
 
 # add index generator below the published pages generator
 def generate_index_page(stories):
