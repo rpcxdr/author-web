@@ -158,13 +158,14 @@ def _read_content_file(filename):
     except Exception:
         return ""
 
-def _published_story_filename(story):
-    date_value = (story.get("date") or "").strip()
+def _published_story_filename(story):    
     try:
-        date_obj = datetime.strptime(date_value, "%Y-%m-%d")
-        return f"Post_{date_obj.strftime('%Y%m%d')}.html"
-    except (ValueError, TypeError):
-        return f"Post_{story.get('id')}.html"
+        date_obj = datetime.strptime(story.get("date").strip(), "%Y-%m-%d")
+        duplicate_date_index = story.get("duplicate_date_index") or ""
+        filename_part = f"{date_obj.strftime('%Y%m%d')}{duplicate_date_index}"
+    except Exception:
+        filename_part = story.get('id')
+    return f"Post_{filename_part}.html"
 
 def generate_published_pages(stories):
     """
@@ -244,6 +245,7 @@ def save_stories(stories):
     field; ensures 'content_file' is present when possible.
     """
     to_save = []
+    duplicate_date_counters = {}
     for s in stories:
         meta = {k: v for k, v in s.items() if k != "content"}
         # ensure key exists (default string if missing)
@@ -257,8 +259,15 @@ def save_stories(stories):
                 _write_content_file(fname, s["content"])
                 meta["content_file"] = fname
             except Exception:
-                pass
+                pass 
+        if duplicate_date_counters[meta["date"]]: # if we've seen this date before, increment counter and assign index
+            duplicate_date_counters[meta["date"]] += 1
+            meta["duplicate_date_index"] = f"-{duplicate_date_counters[meta["date"]]}" 
+        else:
+            duplicate_date_counters[meta["date"]] = 1
+            meta["duplicate_date_index"] = "" # for first occurrence, index is empty string
         to_save.append(meta)
+ 
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(to_save, f, ensure_ascii=False, indent=2)
 

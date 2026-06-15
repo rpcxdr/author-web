@@ -310,7 +310,7 @@ input[type="file"] {
   font-size:1rem;
 }
 
-.story-detail .ck-content figure.image.image_resized {
+.story-detail .ck-content figure.image {
   box-sizing: border-box;
   display: block;
   max-width: 100%;
