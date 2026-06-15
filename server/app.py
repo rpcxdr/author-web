@@ -173,7 +173,6 @@ def generate_published_pages(stories):
     Remove existing rendered HTML files and render one HTML page per published story
     using templates/story_template.html. Expects stories to include 'content', 'title', 'date', 'id' and 'published'.
     """
-    
     _ensure_content_dir()
     # clean existing rendered html files
     try:
@@ -186,7 +185,6 @@ def generate_published_pages(stories):
     except FileNotFoundError:
         os.makedirs(RENDERED_DIR, exist_ok=True)
     # render each published story
-
     for s in stories:
         pub = s.get("published")
         # treat explicit false/"false" as not published; everything else -> published
@@ -201,7 +199,7 @@ def generate_published_pages(stories):
             date_obj = datetime.strptime(date, "%Y-%m-%d")
             date = date_obj.strftime("%A, %B %d, %Y")
         except (ValueError, TypeError):
-           raise ValueError("This is a custom error message aaoh!")
+            pass
         rendered = render_template("story_template.html", title=title, subtitle=subtitle, date=date, content=content)
         out_path = os.path.join(RENDERED_DIR, _published_story_filename(s))
         try:
@@ -311,11 +309,6 @@ def save_stories(stories):
     # regenerate published HTML pages from the provided stories (uses in-memory content)
     generate_published_pages(stories)
     generate_index_page(stories)
-    #try:
-    #    generate_published_pages(stories)
-    #    generate_index_page(stories)
-    #except Exception:
-    #    pass
 
 # add index generator below the published pages generator
 def generate_index_page(stories):
@@ -329,6 +322,10 @@ def generate_index_page(stories):
 
     # Build template-friendly story objects with formatted dates and rendered filenames.
     for story in stories:
+        pub = story.get("published")
+        # treat explicit false/"false" as not published; everything else -> published
+        if pub is False or (isinstance(pub, str) and pub.lower() == "false"):
+            continue
         story_for_index = dict(story)
         story_for_index["published_filename"] = _published_story_filename(story)
         # Check if the story has a date to process
