@@ -220,6 +220,7 @@ export default function StoryEditor({
                   <span>{imagePickerOpen ? "Hide Image List" : "Open Image List"}</span>
                 </summary>
                 <div className="image-url-picker-panel">
+                  <div>Click on an image to copy its URL to the clipboard. Then click "Insert image via URL" in the editor and paste in the URL to add the image.</div>
                   {imagesLoading ? (
                     <p className="small">Loading images...</p>
                   ) : images.length === 0 ? (
