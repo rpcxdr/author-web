@@ -67,7 +67,10 @@ def login():
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "stories.json")
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), "story_texts")
-RENDERED_DIR = os.path.join(os.path.dirname(__file__), "../public/stories")
+ROOT_DIR = os.path.join(os.path.dirname(__file__), "../")
+RENDERED_ROOT_DIR = os.path.join(os.path.dirname(__file__), ROOT_DIR + "public/stories")
+POSTS_DIR = "posts"
+RENDERED_POSTS_DIR = os.path.join(os.path.dirname(__file__), ROOT_DIR + POSTS_DIR)
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "../public/uploads")
 ALLOWED_IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
 LOCK_FILE = DATA_FILE + ".lock"
@@ -120,12 +123,10 @@ def make_lock(mode="thread"):
 lock = make_lock(LOCK_MODE)
 
 def _ensure_content_dir():
-    try:
-        os.makedirs(CONTENT_DIR, exist_ok=True)
-        os.makedirs(RENDERED_DIR, exist_ok=True)  # ensure rendered dir exists
-        os.makedirs(UPLOAD_DIR, exist_ok=True)
-    except Exception:
-        pass
+    os.makedirs(CONTENT_DIR, exist_ok=True)
+    os.makedirs(RENDERED_ROOT_DIR, exist_ok=True)
+    os.makedirs(RENDERED_POSTS_DIR, exist_ok=True)
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 def _build_public_url(*parts):
     base_path = VITE_IMAGE_BASE_PATH.strip()
@@ -173,17 +174,18 @@ def generate_published_pages(stories):
     Remove existing rendered HTML files and render one HTML page per published story
     using templates/story_template.html. Expects stories to include 'content', 'title', 'date', 'id' and 'published'.
     """
+
     _ensure_content_dir()
     # clean existing rendered html files
     try:
-        for fname in os.listdir(RENDERED_DIR):
+        for fname in os.listdir(RENDERED_POSTS_DIR):
             if fname.endswith(".html"):
                 try:
-                    os.remove(os.path.join(RENDERED_DIR, fname))
+                    os.remove(os.path.join(RENDERED_POSTS_DIR, fname))
                 except Exception:
                     pass
     except FileNotFoundError:
-        os.makedirs(RENDERED_DIR, exist_ok=True)
+        os.makedirs(RENDERED_POSTS_DIR, exist_ok=True)
     # render each published story
     for s in stories:
         pub = s.get("published")
@@ -201,7 +203,7 @@ def generate_published_pages(stories):
         except (ValueError, TypeError):
             pass
         rendered = render_template("story_template.html", title=title, subtitle=subtitle, date=date, content=content)
-        out_path = os.path.join(RENDERED_DIR, _published_story_filename(s))
+        out_path = os.path.join(RENDERED_POSTS_DIR, _published_story_filename(s))
         try:
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write(rendered)
@@ -314,7 +316,7 @@ def save_stories(stories):
 def generate_index_page(stories):
     """
     Render a single index/listing page from templates/story_list_template.html
-    and write it into the RENDERED_DIR as index.html.
+    and write it into the RENDERED_ROOT_DIR as prev_posts.html.
     """
     _ensure_content_dir()
 
@@ -327,7 +329,7 @@ def generate_index_page(stories):
         if pub is False or (isinstance(pub, str) and pub.lower() == "false"):
             continue
         story_for_index = dict(story)
-        story_for_index["published_filename"] = _published_story_filename(story)
+        story_for_index["published_filename"] = "/" + POSTS_DIR + "/" + _published_story_filename(story)
         # Check if the story has a date to process
         if "date" in story_for_index and story_for_index["date"]:
             try:
@@ -340,15 +342,13 @@ def generate_index_page(stories):
                 # print(f"Warning: Could not parse date for story '{story.get('title', 'Unknown')}'.")
                 pass
         stories_for_index.append(story_for_index)
-    try:
-        # Render the template with the full stories list 
-        rendered = render_template("story_list_template.html", stories=stories_for_index)
-        out_path = os.path.join(RENDERED_DIR, "prev_posts.html")
-        with open(out_path, "w", encoding="utf-8") as f:
-            f.write(rendered)
-    except Exception:
-        # no-op on failure
-        pass
+    stories_for_index.sort(key=lambda x: x.get("published_filename", 0), reverse=True)
+    
+    # Render the template with the full stories list 
+    rendered = render_template("story_list_template.html", stories=stories_for_index)
+    out_path = os.path.join(RENDERED_ROOT_DIR, "prev_posts.html")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(rendered)
 
 @app.route("/api/stories", methods=["GET"])
 def list_stories():

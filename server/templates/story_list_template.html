@@ -24,14 +24,14 @@
             <div id="sidebar">
                 <div>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="faq.html">FAQs</a></li>
-                        <li><a href="gallery.html">Image Gallery</a></li>
-                        <li><a href="links.html">Links</a></li>
-                        <!-- <li><a href="events.html">Mary's Events</a></li>-->
-                        <li><a href="prev_posts.html">Previous Posts</a></li>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="/contact.html">Contact Us</a></li>
+                        <li><a href="/faq.html">FAQs</a></li>
+                        <li><a href="/gallery.html">Image Gallery</a></li>
+                        <li><a href="/links.html">Links</a></li>
+                        <!-- <li><a href="/events.html">Mary's Events</a></li>-->
+                        <li><a href="/prev_posts.html">Previous Posts</a></li>
                     </ul>
                 </div>
             </div> <!-- end #sidebar -->
@@ -40,15 +40,847 @@
                 <div>
                     <table class="previous_posts" summary="Mary's previous posts" cellspacing="0">
                         <caption>Previous Posts</caption>
-                            <tbody><tr><th scope="col"><div class="align_left">Title of Post</div></th>
-                            <th scope="col"><div class="align_left">Posting Date</div></th>
-                            </tr>
-                            {% for s in stories %}
-                            <tr class="{{ 'alt' if loop.index0 % 2 == 1 else '' }}">
-                                <td class="post_page"><a href="{{ s.published_filename }}">{{ s.title }}</a></td>
-                                <td class="post_page">{{ s.date }}</td>
-                            </tr>
-                            {% endfor %}
+                        <tbody><tr><th scope="col"><div class="align_left">Title of Post</div></th>
+                        <th scope="col"><div class="align_left">Posting Date</div></th>
+                        </tr>
+                        {% for s in stories %}
+                        <tr class="{{ 'alt' if loop.index0 % 2 == 1 else '' }}">
+                            <td class="post_page"><a href="{{ s.published_filename }}">{{ s.title }}</a></td>
+                            <td class="post_page">{{ s.date }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="alt">
+							<td class="post_page"><a href="/Post_20240731.html">OUR DAILY TORTILLA</a></td>
+							<td class="post_page">July 31, 2024</td>
+						</tr>
+                        <tr>
+							<td class="post_page"><a href="/Post_20240630.html">PREPARING FOR THE FUTURE</a></td>
+							<td class="post_page">Junel 30, 2024</td>
+						</tr>
+                        <tr class="alt">
+							<td class="post_page"><a href="/Post_20240531.html">DEDICATED DADS</a></td>
+							<td class="post_page">May 31, 2024</td>
+						</tr>
+                        <tr>
+							<td class="post_page"><a href="/Post_20240430.html">OUR RICH HRERITAGE</a></td>
+							<td class="post_page">April 30, 2024</td>
+						</tr>
+                        <tr class="alt">
+							<td class="post_page"><a href="/Post_20240331.html">SUNSHINE DURING RAIN</a></td>
+							<td class="post_page">March 31, 2024</td>
+						</tr>
+						<tr>
+                            <td class="post_page"><a href="/Post_20240227.html">PICTURE OF THE PAST</a></td>
+							<td class="post_page">February 27, 2024</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20240130.html">TODAY IS THE FUTURE YOU WERE WORRIED ABOUT</a></td>
+							<td class="post_page">January 30, 2024</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20231231.html">TIME WILL TELL</a></td>
+							<td class="post_page">December 31, 2023</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20231130.html">CHRISTMAS JOY IS A CHOICE</a></td>
+							<td class="post_page">November 30, 2023</td>
+						</tr>
+                        <tr>
+                            <td class="post_page"><a href="/Post_20231029.html">HAVE YOU EATEN?</a></td>
+							<td class="post_page">October 29, 2023</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20230930.html">IMAGINATION AND CREATIVITY</a></td>
+							<td class="post_page">September 30, 2023</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20230829.html">STAY STRONG IN YOUR FAITH!</a></td>
+							<td class="post_page">August 29, 2023</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20230729.html">FAR FROM HOME</a></td>
+							<td class="post_page">July 29, 2023</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20230630.html">ADVENTURE IN PRAYER</a></td>
+							<td class="post_page">June 30, 2023</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20230529.html">THE IMPERFECT WEDDING</a></td>
+							<td class="post_page">May 29, 2023</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20230430.html">NEEDLESS WORRY</a></td>
+							<td class="post_page">April 30, 2023</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20230326.html">HOLD TIGHT!</a></td>
+							<td class="post_page">March 26, 2023</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20230228.html">OUR SOURCE OF POWER</a></td>
+							<td class="post_page">February 28, 2023</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20230129.html">CHANGES ARE INEVITABLE</a></td>
+							<td class="post_page">January 29, 2023</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20221231.html">DON'T FORGET YOUR COAT, HAT AND GLOVES!</a></td>
+							<td class="post_page">December 31, 2022</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20221130.html">WHEN THE WISE MEN CAME TO LIFE</a></td>
+							<td class="post_page">November 30, 2022</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20221031.html">THANKFUL IN ALL CIRCUMSTANCES</a></td>
+							<td class="post_page">October 31, 2022</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20220930.html">TIME CHANGE HAPPENS EVERY AUTUMN</a></td>
+							<td class="post_page">September 30, 2022</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20220831.html">WORRIED ABOUT THE FUTURE?</a></td>
+							<td class="post_page">August 31, 2022</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20220731.html">TURN YOUR WORRIES INTO PRAYERS</a></td>
+							<td class="post_page">July 31, 2022</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20220630.html">ARE YOU PUZZLED?</a></td>
+							<td class="post_page">June 30, 2022</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20220531.html">EXPECT THE UNEXPECTED</a></td>
+							<td class="post_page">May 31, 2022</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20220430.html">WICKED WEATHER</a></td>
+							<td class="post_page">April 30, 2022</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20220331.html">WHAT'S NEXT?</a></td>
+							<td class="post_page">March 31, 2022</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20220228.html">PRAYER WAS THE FIRST WIRELESS COMMUNICATION</a></td>
+							<td class="post_page">February 28, 2022</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20220131.html">THERE'S ROMANCE IN THE BIBLE</a></td>
+							<td class="post_page">January 31, 2022</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20211231.html">RENEW OLD RESOLUTIONS</a></td>
+							<td class="post_page">December 31, 2021</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20211130.html">CHRISTMAS GREETINGS</a></td>
+							<td class="post_page">November 30, 2021</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20211031.html">AUTUMNAL ASSURANCES</a></td>
+							<td class="post_page">October 31, 2021</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20210929.html">AGE DOESN'T MATTER</a></td>
+							<td class="post_page">September 29, 2021</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20210831.html">SELF-ACCEPTANCE</a></td>
+							<td class="post_page">August 31, 2021</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20210731.html">MORE SECRETS OF A LASTING MARRIAGE</a></td>
+							<td class="post_page">July 31, 2021</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20210630.html">BACK TO CHURCH</a></td>
+							<td class="post_page">June 30, 2021</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20210531.html">BEYOND THE STORM</a></td>
+							<td class="post_page">May 31, 2021</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20210430.html">LET NOT YOUR HEART BE TROUBLED</a></td>
+							<td class="post_page">April 30, 2021</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20210331.html">LESSON FROM A CHAMELEON</a></td>
+							<td class="post_page">March 31, 2021</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20210228.html">DARE TO BE YOURSELF</a></td>
+							<td class="post_page">February 28, 2021</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20210131.html">TRUSTING JESUS</a></td>
+							<td class="post_page">January 31, 2021</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20201230.html">COUNTING OUR BLESSINGS</a></td>
+							<td class="post_page">December 30, 2020</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20201130.html">NEW TRADITIONS</a></td>
+							<td class="post_page">November 30, 2020</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20201031.html">PEACE IN THE PANDEMIC</a></td>
+							<td class="post_page">October 31, 2020</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20200929.html">RECEIVERS AND GIVERS</a></td>
+							<td class="post_page">September 29, 2020</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20200831.html">PONDERING THE PANDEMIC</a></td>
+							<td class="post_page">August 31, 2020</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20200731.html">LIVING WITHOUT FEAR</a></td>
+							<td class="post_page">July 31, 2020</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20200630.html">BLESSED WITH LESS</a></td>
+							<td class="post_page">June 30, 2020</td>
+						</tr>						
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20200531.html">SMILING THROUGH STRANGE TIMES</a></td>
+							<td class="post_page">May 31, 2020</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20200429.html">MAKE USE OF QUARANTINE TIME!</a></td>
+							<td class="post_page">April 29, 2020</td>
+						</tr>						
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20200331.html">DISHING UP DINNER DURING SOCIAL DISTANCING</a></td>
+							<td class="post_page">March 31, 2020</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20200229.html">A SMALL DWELLING CAN HOLD A LOT OF LOVE</a></td>
+							<td class="post_page">February 29, 2020</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20200129.html">GIFTS AND NECESSITIES</a></td>
+							<td class="post_page">January 29, 2020</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20191231.html">ARE YOU MELTED?</a></td>
+							<td class="post_page">December 31, 2019</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20191130.html">THE GIFT OF TIME</a></td>
+							<td class="post_page">November 30, 2019</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20191030.html">GOD IS NOT FAR AWAY</a></td>
+							<td class="post_page">October 30, 2019</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20190930.html">THINKING CREATIVELY CAN SAVE MONEY</a></td>
+							<td class="post_page">September 30, 2019</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20190830.html">YOU KNOW IT'S COMING!</a></td>
+							<td class="post_page">August 30, 2019</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20190731.html">THE BLESSING OF CREATIVE COOKING</a></td>
+							<td class="post_page">July 31, 2019</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20190630.html">ETIQUETTE FROM THE BIBLE</a></td>
+							<td class="post_page">June 30, 2019</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20190531.html">GOD'S PREPARATIONS</a></td>
+							<td class="post_page">May 31, 2019</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20190430.html">DO I REALLY NEED TO BUY THAT?</a></td>
+							<td class="post_page">April 30, 2019</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20190330.html">GOD MEETS OUR NEEDS</a></td>
+							<td class="post_page">March 30, 2019</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20190228.html">WORTH THE EFFORT</a></td>
+							<td class="post_page">February 28, 2019</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20190131.html">QUALITIES OF LOVE</a></td>
+							<td class="post_page">January 31, 2019</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20181231.html">IT'S SO QUIET!</a></td>
+							<td class="post_page">December 31, 2018</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20181130.html">CHRISTMAS DOESN'T NEED TO BE PERFECT</a></td>
+							<td class="post_page">November 30, 2018</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20181031.html">WORRY IS WORK</a></td>
+							<td class="post_page">October 31, 2018</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20180929.html">CHANGES ARE AHEAD</a></td>
+							<td class="post_page">September 29, 2018</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20180831.html">ARE YOU CHOSEN TO RECEIVE A SPECIAL BLESSING?</a></td>
+							<td class="post_page">August 31, 2018</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20180731.html">READING BRINGS PEOPLE TOGETHER</a></td>
+							<td class="post_page">July 31, 2018</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20180629.html">PEACE IN THE STORM</a></td>
+							<td class="post_page">June 29, 2018</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20180531.html">IN SICKNESS AND IN HEALTH</a></td>
+							<td class="post_page">May 31, 2018</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20180430.html">DIGGING DIRT TOGETHER</a></td>
+							<td class="post_page">April 30, 2018</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20180331.html">STILL SPEAKING IN MODERATE TONES</a></td>
+							<td class="post_page">March 31, 2018</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20180228.html">WE'RE ALL PART OF A LARGER FAMILY</a></td>
+							<td class="post_page">February 28, 2018</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20180131.html">CHARACTERISTICS OF FRUIT — Fruit of the Spirit — Part 8</a></td>
+							<td class="post_page">January 31, 2018</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20171230.html">GENTLENESS AND SELF-CONTROL PROMOTE TRANQUILITY — Fruit of the Spirit — Part 7</a></td>
+							<td class="post_page">December 30, 2017</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20171130.html">QUALITIES OF FAITHFULNESS — Fruit of the Spirit — Part 6</a></td>
+							<td class="post_page">November 30, 2017</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20171031.html">KINDNESS AND GENEROSITY ARE SIGNS OF LIFE — Fruit of the Spirit — Part 5</a></td>
+							<td class="post_page">October 31, 2017</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20170928.html">PATIENCE IS A TEACHER — Fruit of the Spirit — Part 4</a></td>
+							<td class="post_page">September 28, 2017</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20170731.html">INNER PEACE — Fruit of the Spirit — Part 3</a></td>
+							<td class="post_page">July 31, 2017</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20170630.html">WHAT IS JOY? — Fruit of the Spirit — Part 2</a></td>
+							<td class="post_page">June 30, 2017</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20170531.html">CATERPILLARS, BUTTERFLIES, AND WISDOM</a></td>
+							<td class="post_page">May 31, 2017</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20170429.html">WALKING IN GOD'S LOVE</a></td>
+							<td class="post_page">April 29, 2017</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20170325.html">NEW CHRISTIANS ARE LIKE CATERPILLARS</a></td>
+							<td class="post_page">March 25, 2017</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20170228.html">IN GOD'S HANDS</a></td>
+							<td class="post_page">February 28, 2017</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20170131.html">FRUIT OF THE SPIRIT — Fruit of the Spirit — Part 1</a></td>
+							<td class="post_page">January 31, 2017</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20161231.html">TIME IS A GIFT</a></td>
+							<td class="post_page">December 31, 2016</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20161130.html">SILENT NIGHT</a></td>
+							<td class="post_page">November 30, 2016</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20161028.html">NECESSARY ADVERSARIES</a></td>
+							<td class="post_page">October 28, 2016</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20160930.html">THANKFUL FOR MANA</a></td>
+							<td class="post_page">September 30, 2016</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20160831.html">GOOD NEIGHBOR</a></td>
+							<td class="post_page">August 31, 2016</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20160731.html">EMPTY PROMISES</a></td>
+							<td class="post_page">July 31, 2016</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20160630.html">AN INVISIBLE BATTLE</a></td>
+							<td class="post_page">June 30, 2016</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20160531.html">WORDS OF FRIENDSHIP</a></td>
+							<td class="post_page">May 31, 2016</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20160430.html">FOR THINE IS THE KINGDOM - The Lord's Prayer - Part 8</a></td>
+							<td class="post_page">April 30, 2016</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20160331.html">LEAD US NOT INTO TEMPTATION – The Lord’s Prayer – Part 7</a></td>
+							<td class="post_page">March 31, 2016</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20160229.html">FORGIVE US OUR DEBTS - The Lord's Prayer - Part 6</a></td>
+							<td class="post_page">February 29, 2016</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20160131.html">GIVE US THIS DAY OUR DAILY BREAD – The Lord’s Prayer – Part 5</a></td>
+							<td class="post_page">January 31, 2016</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20151231.html">THY KINGDOM COME - The Lord's Prayer - Part 4</a></td>
+							<td class="post_page">December 31, 2015</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20151130.html">WHOLLY HOLY – The Lord’s Prayer – Part 3</a></td>
+							<td class="post_page">November 30, 2015</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20151031.html">GOD'S ADDRESS - The Lord's Prayer - Part 2</a></td>
+							<td class="post_page">October 31, 2015</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20150930.html">THERE’S PRAYER IN THE AIR – The Lord’s Prayer – Part 1</a></td>
+							<td class="post_page">September 30, 2015</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20150731.html">EXPLORING HISTORY</a></td>
+							<td class="post_page">July 31, 2015</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20150630.html">RAIN BRINGS SMILES</a></td>
+							<td class="post_page">June 30, 2015</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20150531.html">TODAY'S FORBIDDEN FRUIT</a></td>
+							<td class="post_page">May 31, 2015</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20150430.html">ALWAYS MOVING FORWARD</a></td>
+							<td class="post_page">April 30, 2015</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20150330.html">THERE'S NO NEED TO BE LONELY</a></td>
+							<td class="post_page">March 30, 2015</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20150227.html">READING TO MY MOTHER</a></td>
+							<td class="post_page">February 27, 2015</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20150131.html">GOD LISTENS</a></td>
+							<td class="post_page">January 31, 2015</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20141129.html">HAPPY BITHDAY AT CHRISTMAS!</a></td>
+							<td class="post_page">November 29, 2014</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20141031.html">READING IS A DANGEROUS ACTIVITY</a></td>
+							<td class="post_page">October 31, 2014</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20140831.html">THE RIGHT KIND OF POWER</a></td>
+							<td class="post_page">August 31, 2014</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20140731.html">SUMMER MEMORIES</a></td>
+							<td class="post_page">July 31, 2014</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20140630.html">LOVE AND LAUNDRY</a></td>
+							<td class="post_page">June 30, 2014</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20140531.html">SECRETS OF A LASTING MARRIAGE, PART TWO</a></td>
+							<td class="post_page">May 31, 2014</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20140430.html">WATCH THIS!</a></td>
+							<td class="post_page">April 30, 2014</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20140331.html">BIRTHDAYS ARE GOOD ANY TIME</a></td>
+							<td class="post_page">March 31, 2014</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20140228.html">LET'S HAVE SOME SOUP!</a></td>
+							<td class="post_page">February 28, 2014</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20140131.html">IT'S YOUR FUTURE!</a></td>
+							<td class="post_page">January 31, 2014</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20131221.html">CHRISTMAS BLESSINGS</a></td>
+							<td class="post_page">December 21, 2013</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20130929.html">SING A SONG AND READ</a></td>
+							<td class="post_page">September 29, 2013</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20130830.html">SWIMMING IN FAITH</a></td>
+							<td class="post_page">August 30, 2013</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20130731.html">SCENT OF THE SAVIOR</a></td>
+							<td class="post_page">July 31, 2013</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20130627.html">SECRETS OF A LASTING MARRIAGE</a></td>
+							<td class="post_page">June 27, 2013</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20130512.html">MY OTHER MOTHER</a></td>
+							<td class="post_page">May 12, 2013</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20130430.html">A SMILE IS ALWAYS IN STYLE!</a></td>
+							<td class="post_page">April 30, 2013</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20130331.html">GOD REMEMBERS</a></td>
+							<td class="post_page">March 31, 2013</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20130228.html">SING IT!</a></td>
+							<td class="post_page">February 28, 2013</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20130129.html">IT'S COLD!</a></td>
+							<td class="post_page">January 29, 2013</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20121231.html">HAPPY NEW YEAR!</a></td>
+							<td class="post_page">December 31, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20121130.html">PUTTING UP THE CHRISTMAS TREE</a></td>
+							<td class="post_page">November 30, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20121029.html">SURELY GOODNESS AND MERCY – Psalm 23 – Part 15</a></td>
+							<td class="post_page">October 29, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120929.html">MY CUP RUNNETH OVER – Psalm 23 – Part 14</a></td>
+							<td class="post_page">September 29, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120915.html">ANNOINT MY HEAD WITH OIL – Psalm 23 – Part 13</a></td>
+							<td class="post_page">September 15, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120827.html">A TABLE PREPARED– Psalm 23 – Part 12</a></td>
+							<td class="post_page">August 27, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120729.html">THROUGH THE VALLEY OF THE SHADOW OF DEATH – Psalm 23 – Part 11</a></td>
+							<td class="post_page">July 29, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120706.html">YEA, THOUGH I WALK– Psalm 23 – Part 10</a></td>
+							<td class="post_page">July 6, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120618.html">PATHS OF RIGHTEOUSNESS – Psalm 23 – Part 9</a></td>
+							<td class="post_page">June 18, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120529.html">HE RESTORES MY SOUL – Psalm 23 – Part 8</a></td>
+							<td class="post_page">May 29, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120516.html">BESIDE STILL WATERS – Psalm 23 – Part 7</a></td>
+							<td class="post_page">May 16, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120425.html">HE LEADETH ME – Psalm 23 – Part 6</a></td>
+							<td class="post_page">April 25, 2012</td>
+						</tr>
+						<tr>
+						    <td class="post_page"><a href="/Post_20120414.html">IN GREEN PASTURES – Psalm 23 – Part 5</a></td>
+							<td class="post_page">April 14, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120327.html">HE MAKETH ME TO LIE DOWN – Psalm 23 – Part 4</a></td>
+							<td class="post_page">March 27, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120313.html">I SHALL NOT WANT – Psalm 23 – Part 3</a></td>
+							<td class="post_page">March 13, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120302.html">MY SHEPHERD – Psalm 23 – Part 2</a></td>
+							<td class="post_page">March 2, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120215.html">THE LORD IS – Psalm 23 – Part 1</a></td>
+							<td class="post_page">February 15, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120207.html">"WHO SAYS WE CAN'T PRAY?</a></td>
+							<td class="post_page">February 7, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120128.html">AN ENVELOPE FULL OF LOVE</a></td>
+							<td class="post_page">January 28, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120121.html">"MINER" PROPHETS?</a></td>
+							<td class="post_page">January 21, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20120114.html">EVERY BREATH IS A GIFT!</a></td>
+							<td class="post_page">January 14, 2012</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20120110.html">COUNT THE COST</a></td>
+							<td class="post_page">January 10, 2012</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20111231.html">DON'T GIVE UP HOPE!</a></td>
+							<td class="post_page">December 31, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20111224.html">MERRY CHRISTMAS!</a></td>
+							<td class="post_page">December 24, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20111217.html">SWEET TEMPTATION</a></td>
+							<td class="post_page">December 17, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20111210.html">THE PERFECT GIFT</a></td>
+							<td class="post_page">December 10, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20111203.html">OUR CHRISTMAS TREE OF MEMORIES</a></td>
+							<td class="post_page">December 3, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20111126.html">LIGHTS, CAMERA, CHRISTMAS!</a></td>
+							<td class="post_page">November 26, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20111119.html">THANKSGIVING ON THE FARM</a></td>
+							<td class="post_page">November 19, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20111113.html">A NEVER-ENDING JOURNEY</a></td>
+							<td class="post_page">November 13, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20111105.html">IT'S NO ACCIDENT</a></td>
+							<td class="post_page">November 5, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20111029.html">NO PROBLEM!</a></td>
+							<td class="post_page">October 29, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20111022.html">THANK YOU, MR PLATT!</a></td>
+							<td class="post_page">October 22, 2011</td>
+						</tr>	
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20111016.html">THE MUSIC BOX</a></td>
+							<td class="post_page">October 16, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20111010.html">MONEY IS SO TEMPORARY</a></td>
+							<td class="post_page">October 10, 2011</td>
+						</tr>	
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20111001.html">IT WASN'T RAINING WHEN NOAH BUILT THE ARK</a></td>
+							<td class="post_page">October 1, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110925.html">WHAT MAKES YOUR MARRIAGE UNIQUE?</a></td>
+							<td class="post_page">September 25, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110919.html">GOD LOVES YOU</a></td>
+							<td class="post_page">September 19, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110911.html">MY MOTHER'S MOUNTAINS</a></td>
+							<td class="post_page">September 11, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110904.html">SUNFLOWER WISDOM</a></td>
+							<td class="post_page">September 4, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110827.html">THE GATE</a></td>
+							<td class="post_page">August 27, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110821.html">PRAY YOUR CHILDREN THROUGH SCHOOL!</a></td>
+							<td class="post_page">August 21, 2011</td>
+						</tr>	
+						<tr>
+							<td class="post_page"><a href="/Post_20110813.html">GARDEN OF HOPE IN THE DESERT</a></td>
+							<td class="post_page">August 13, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110806.html">PAY ATTENTION!</a></td>
+							<td class="post_page">August 6, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110731.html">DOWNPLAY YOUR DIFFERENCES</a></td>
+							<td class="post_page">July 31, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110723.html">JUST SAY, "THANK YOU!"</a></td>
+							<td class="post_page">July 23, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110717.html">PRAYER IN MARRIAGE</a></td>
+							<td class="post_page">July 17, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110711.html">SPANISH: THE LIVING LEGACY OF LATIN</a></td>
+							<td class="post_page">July 11, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110703.html">JULY 4TH IN AMERICA</a></td>
+							<td class="post_page">July 3, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110625.html">HEARING FROM GOD</a></td>
+							<td class="post_page">June 25, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110620.html">GOLDEN MOMENTS IN TIME</a></td>
+							<td class="post_page">June 20, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110611.html">SMOKE AND ASH IN NEW MEXICO</a></td>
+							<td class="post_page">June 11, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110605.html">IT’S AN HONOR TO HELP A CHILD</a></td>
+							<td class="post_page">June 5, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110528.html">IN STORMY WEATHER, KEEP IT TOGETHER</a></td>
+							<td class="post_page">May 28, 2011</td>
+						</tr>	
+						<tr>
+							<td class="post_page"><a href="/Post_20110523.html">DO ONE THING WELL</a></td>
+							<td class="post_page">May 23, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110515.html">OVERWHELMED</a></td>
+							<td class="post_page">May 15, 2011</td>
+						</tr>	
+						<tr>
+							<td class="post_page"><a href="/Post_20110507.html">MOM, MAMA, MAMAN, MAMMA</a></td>
+							<td class="post_page">May 7, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110430.html">GETTING MARRIED IS EASY, BUT STAYING MARRIED ISN’T</a></td>
+							<td class="post_page">April 30, 2011</td>
+						</tr>	
+						<tr>
+							<td class="post_page"><a href="/Post_20110423.html">MEN SHAPE WOMEN'S FASHION</a></td>
+							<td class="post_page">April 23, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110419.html">EASTER WAS SCARY!</a></td>
+							<td class="post_page">April 19, 2011</td>
+						</tr>	
+						<tr>
+							<td class="post_page"><a href="/Post_20110409.html">SMALL THINGS MAKE A BIG DIFFERENCE</a></td>
+							<td class="post_page">April 9, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110403.html">END TIMES AND TAXES</a></td>
+							<td class="post_page">April 3, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110327.html">MARCH, SPRING, AND DUCK!</a></td>
+							<td class="post_page">March 27, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110319.html">WHEN ALL ELSE FAILS, READ INSTRUCTIONS</a></td>
+							<td class="post_page">March 19, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110312.html">EARTHQUAKES AND OTHER UNCERTAINTIES</a></td>
+							<td class="post_page">March 12, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110305.html">CHRISTCHURCH: TWENTY-FIRST CENTURY GOOD SAMARITANS</a></td>
+							<td class="post_page">March 5, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110221.html">LIFE IS A TRAINING SESSION</a></td>
+							<td class="post_page">February 21, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110203.html">HAPPY FEBRUARY!</a></td>
+							<td class="post_page">February 3, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110125.html">I WAS JUST THINKING OF YOU!</a></td>
+							<td class="post_page">January 25, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110116.html">MARRIAGE-OLOGY 101: Introduction</a></td>
+							<td class="post_page">January 16, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20110108.html">COUNT IT ALL JOY</a></td>
+							<td class="post_page">January 8, 2011</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20110102.html">RESOLVE RATHER THAN DISSOLVE</a></td>
+							<td class="post_page">January 2, 2011</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20101224.html">OPEN THE GIFT!</a></td>
+							<td class="post_page">December 24, 2010</td>
+						</tr>
+						<tr class="alt">
+							<td class="post_page"><a href="/Post_20101220.html">CHRISTMAS IS WHAT YOU MAKE IT</a></td>
+							<td class="post_page">December 20, 2010</td>
+						</tr>
+						<tr>
+							<td class="post_page"><a href="/Post_20101211.html">EVERYONE MUST START SOMEWHERE</a></td>
+							<td class="post_page">December 11, 2010</td>
+						</tr>
                     </tbody></table> <!-- end of class "previous_posts" -->
                     <p>Mary loves sharing her presentations with a variety of groups. For more information about any of her events, please get in contact with the event's organizer.</p>
                     <div class="end_of_topic"></div>
