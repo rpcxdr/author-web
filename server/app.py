@@ -240,6 +240,14 @@ def load_stories():
         story["content"] = content
         stories.append(story)
 
+    def _parse_date_val(st):
+        try:
+            return datetime.strptime((st.get("date") or "").strip(), "%Y-%m-%d")
+        except Exception:
+            return datetime.min
+
+    stories = sorted(stories, key=_parse_date_val, reverse=True)
+
     return stories
 
 def find_unused_images(filenames):
@@ -311,6 +319,7 @@ def save_stories(stories):
     # regenerate published HTML pages from the provided stories (uses in-memory content)
     generate_published_pages(stories)
     generate_index_page(stories)
+    generate_home_page(stories)
 
 # add index generator below the published pages generator
 def generate_index_page(stories):
@@ -342,11 +351,36 @@ def generate_index_page(stories):
                 # print(f"Warning: Could not parse date for story '{story.get('title', 'Unknown')}'.")
                 pass
         stories_for_index.append(story_for_index)
-    stories_for_index.sort(key=lambda x: x.get("published_filename", 0), reverse=True)
     
     # Render the template with the full stories list 
     rendered = render_template("story_list_template.html", stories=stories_for_index)
     out_path = os.path.join(RENDERED_ROOT_DIR, "prev_posts.html")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(rendered)
+
+
+def generate_home_page(stories):
+    """
+    Render a home page (index.html) using templates/home_page_template.html
+    and write it to the rendered root directory. Passes only the most recent
+    story (first item in the provided list) as `story` to the template.
+    """
+    _ensure_content_dir()
+
+    s = stories[0]
+
+    content = _read_content_file(s.get("content_file"))
+    title = s.get("title", "")
+    subtitle = s.get("subtitle", "")
+    date = s.get("date", "")
+    try:
+        date_obj = datetime.strptime(date, "%Y-%m-%d")
+        date = date_obj.strftime("%A, %B %d, %Y")
+    except (ValueError, TypeError):
+        pass
+
+    rendered = render_template("home_page_template.html", title=title, subtitle=subtitle, date=date, content=content)
+    out_path = os.path.join(RENDERED_ROOT_DIR, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(rendered)
 
@@ -527,7 +561,6 @@ def list_images():
             "modified_time": modified_time,
         })
 
-    # Sort by modified_time descending
     images.sort(key=lambda x: x.get("modified_time", 0), reverse=True)
 
     return jsonify(images)
