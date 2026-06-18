@@ -13,7 +13,7 @@ import time
 import uuid
 import base64
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
 from werkzeug.utils import secure_filename
 import traceback
@@ -202,7 +202,8 @@ def generate_published_pages(stories):
             date = date_obj.strftime("%A, %B %d, %Y")
         except (ValueError, TypeError):
             pass
-        rendered = render_template("story_template.html", title=title, subtitle=subtitle, date=date, content=content)
+        current_year = datetime.now(timezone.utc).year
+        rendered = render_template("story_template.html", title=title, subtitle=subtitle, date=date, content=content, current_year=current_year)
         out_path = os.path.join(RENDERED_POSTS_DIR, _published_story_filename(s))
         try:
             with open(out_path, "w", encoding="utf-8") as f:
@@ -352,8 +353,8 @@ def generate_index_page(stories):
                 pass
         stories_for_index.append(story_for_index)
     
-    # Render the template with the full stories list 
-    rendered = render_template("story_list_template.html", stories=stories_for_index)
+    current_year = datetime.now(timezone.utc).year
+    rendered = render_template("story_list_template.html", stories=stories_for_index, current_year=current_year)
     out_path = os.path.join(RENDERED_ROOT_DIR, "prev_posts.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(rendered)
@@ -379,7 +380,8 @@ def generate_home_page(stories):
     except (ValueError, TypeError):
         pass
 
-    rendered = render_template("home_page_template.html", title=title, subtitle=subtitle, date=date, content=content)
+    current_year = datetime.now(timezone.utc).year
+    rendered = render_template("home_page_template.html", title=title, subtitle=subtitle, date=date, content=content, current_year=current_year)
     out_path = os.path.join(RENDERED_ROOT_DIR, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(rendered)
