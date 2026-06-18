@@ -4,7 +4,7 @@ import {
     ClassicEditor, Alignment, Essentials, Paragraph, Bold, Italic,
     Image, ImageInsert, ImageCaption, ImageResize, ImageStyle, ImageToolbar, LinkImage,
     Font, FontSize, FontColor, FontBackgroundColor,
-    List, Heading, BlockQuote,
+    List, Heading, BlockQuote, Indent, IndentBlock
  } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
 
@@ -26,7 +26,7 @@ export default function CKEditorDemo({ value = "", onChange = () => {} }) {
                     Alignment, Essentials, Paragraph, Bold, Italic, 
                     Image, ImageInsert, ImageCaption, ImageResize, ImageStyle, ImageToolbar, LinkImage,
                     Font, FontSize, FontColor, FontBackgroundColor,
-                    List, Heading, BlockQuote,
+                    List, Heading, BlockQuote, Indent, IndentBlock
                 ],
                 toolbar: [ 
                     'redo', 
@@ -35,6 +35,7 @@ export default function CKEditorDemo({ value = "", onChange = () => {} }) {
                     'bold', 'italic',
                     '|', 
                     'alignment:left', 'alignment:center', 'alignment:right',
+                    'outdent', 'indent',
                     '|', 
                     'heading', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
                     'numberedList', 'bulletedList', "blockQuote",

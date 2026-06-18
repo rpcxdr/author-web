@@ -368,6 +368,8 @@ def generate_home_page(stories):
     """
     _ensure_content_dir()
 
+    # filter out unpublished stories
+    stories = list(filter(lambda s: str(s.get("published")).lower() != "false", stories))
     s = stories[0]
 
     content = _read_content_file(s.get("content_file"))
